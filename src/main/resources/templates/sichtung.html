@@ -22,25 +22,25 @@
 <body>
 	<div class="container">
 		<h1>Neue Sichtung Erfassen</h1>
-		<form action="" method="POST">
+		<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
 			<label for="finder">Finder</label>
-			<input class="form-control" type="text" id="finder" name="finder">
+			<input class="form-control" type="text" id="finder" th:field="*{finder}">
 
 			<label for="locaton">Fundort</label>
-			<input class="form-control" type="text" id="location" name="location">
+			<input class="form-control" type="text" id="location" th:field="*{location}">
 
 			<label for="date">Datum</label>
-			<input class="form-control" type="text" id="date" name="date">
+			<input class="form-control" type="text" id="date" th:field="*{date}">
 
 			<label for="description">Beschreibung</label>
-			<input class="form-control" type="text" id="description" name="description">
+			<input class="form-control" type="text" id="description" th:field="*{description}">
 
 			<input class="btn btn-primary" type="submit" value="Abschicken">
 
 		</form>
 
 		<h2>Bisherige Sichtungen</h2>
-		<table class="table">
+		<table class="table" th:if="${#lists.size(sichtungen.list)} > 0">
 			<thead>
 				<tr>
 					<td>Datum</td>
@@ -51,11 +51,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="s: ${sichtungen}">
+				<tr th:each="s, iter: ${sichtungen.list}">
 					<td th:text="${s.finder}">Peter</td>
 					<td th:text="${s.location}">Unter den Eichen</td>
 					<td th:text="${s.date}">01.01.2019</td>
 					<td th:text="${s.description}">Herr Weitz schießt 17 Feuerwerkskörper in die Luft</td>
+					<td><a th:href="@{'/sichtung/' + ${iter.index}}">[edit]</a></td>
 				</tr>
 			</tbody>
 		</table>
