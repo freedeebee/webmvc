@@ -44,7 +44,7 @@ public class SichtungController {
 			throw new SichtungNotFoundException(String.format("Sichtung mit der Nummer %s konnte nicht gefunden werden", nr));
 		}
 
-		m.addAttribute("sichtungform", sichtungen.getList().get(nr));
+		m.addAttribute("sichtungform", found);
 
 		sichtungen.getList().remove(nr);
 
@@ -53,7 +53,7 @@ public class SichtungController {
 
 	@PostMapping("/sichtung")
 	public String getFormnput(
-		@ModelAttribute("sichtungform") Sichtung sichtung, 
+		@ModelAttribute("sichtungform") Sichtung sichtung,
 		BindingResult result,
 		@ModelAttribute("sichtungen") Sichtungen sichtungen,
 		Model m) {

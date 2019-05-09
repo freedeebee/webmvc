@@ -10,16 +10,43 @@
 
 	<style>
 		input {
-			margin: .5rem 0;
+			margin-bottom: 1.8rem;
 		}
 
-		h1, h2 {
-			margin-bottom: .9rem;
+		.hero-image {
+
+			background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://picsum.photos/1920/400?random");
+			height: 400px;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			position: relative;
+			margin-bottom: 3.6rem;
+		}
+
+		.hero-text {
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: white;
+		}
+
+		table {
+			padding-bottom: 3.6rem;
 		}
 	</style>
 </head>
 
 <body>
+	<div class="hero-image">
+		<div class="hero-text">
+			<h1>17</h1>
+			<p>Siebzehn ist die optimale Anzahl</p>
+		</div>
+	</div>
+
 	<div class="container">
 		<h1>Neue Sichtung Erfassen</h1>
 		<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
@@ -35,23 +62,25 @@
 			<label for="description">Beschreibung</label>
 			<input class="form-control" type="text" id="description" th:field="*{description}">
 
-			<input class="btn btn-primary" type="submit" value="Abschicken">
+			<input class="btn btn-dark" type="submit" value="Abschicken">
 
 		</form>
 
 		<h2>Bisherige Sichtungen</h2>
-		<table class="table" th:if="${#lists.size(sichtungen.list)} > 0">
+		<table class="table table-striped" th:if="${#lists.size(sichtungen.list)} > 0">
 			<thead>
 				<tr>
-					<td>Datum</td>
-					<td>Fundort</td>
-					<td>Finder</td>
-					<td>Beschreibung</td>
-					<td>[edit]</td>
+					<td scope="col">Nr.</td>
+					<td scope="col">Datum</td>
+					<td scope="col">Fundort</td>
+					<td scope="col">Finder</td>
+					<td scope="col">Beschreibung</td>
+					<td scope="col">[edit]</td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="s, iter: ${sichtungen.list}">
+					<td th:text="${iter.index}" scope="row">1</td>
 					<td th:text="${s.finder}">Peter</td>
 					<td th:text="${s.location}">Unter den Eichen</td>
 					<td th:text="${s.date}">01.01.2019</td>
