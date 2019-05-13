@@ -52,7 +52,7 @@ public class SichtungController {
 	}
 
 	@PostMapping("/sichtung")
-	public String getFormnput(
+	public String getFormInput(
 		@ModelAttribute("sichtungform") Sichtung sichtung,
 		BindingResult result,
 		@ModelAttribute("sichtungen") Sichtungen sichtungen,
@@ -65,7 +65,10 @@ public class SichtungController {
 
 		sichtungen.add(sichtung);
 
-		return "redirect:/sichtung";
+		// Clear form
+		m.addAttribute("sichtungform", new Sichtung());
+
+		return "sichtung";
 	}
 
 	@ExceptionHandler(SichtungNotFoundException.class)
