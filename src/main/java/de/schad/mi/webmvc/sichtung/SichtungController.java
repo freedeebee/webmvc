@@ -1,5 +1,9 @@
 package de.schad.mi.webmvc.sichtung;
 
+import java.time.LocalDate;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,8 @@ public class SichtungController {
 
 	Logger log = LoggerFactory.getLogger(SichtungController.class);
 
+	private String[] daytimecbs = {"morgens", "mittags", "abends"};
+
 	@ModelAttribute("sichtungen")
 	public void initListe(Model m) {
 		m.addAttribute("sichtungen", new Sichtungen());
@@ -29,7 +35,6 @@ public class SichtungController {
 	@GetMapping("/sichtung")
 	public String getForm(Model m) {
 		m.addAttribute("sichtungform", new Sichtung());
-
 		return "sichtung";
 	}
 
@@ -41,11 +46,13 @@ public class SichtungController {
 		try {
 			found = sichtungen.getList().get(nr);
 		} catch(IndexOutOfBoundsException e) {
-			throw new SichtungNotFoundException(String.format("Sichtung mit der Nummer %s konnte nicht gefunden werden", nr));
+			//throw new SichtungNotFoundException(String.format("Sichtung mit der Nummer %s konnte nicht gefunden werden", nr));
+
+			//lieber wieder exception schmeißen
+			found = sichtungen.getList().get(0);
 		}
 
 		m.addAttribute("sichtungform", found);
-
 		sichtungen.getList().remove(nr);
 
 		return "sichtung";
@@ -53,12 +60,12 @@ public class SichtungController {
 
 	@PostMapping("/sichtung")
 	public String getFormInput(
-		@ModelAttribute("sichtungform") Sichtung sichtung,
+		@Valid @ModelAttribute("sichtungform") Sichtung sichtung,
 		BindingResult result,
 		@ModelAttribute("sichtungen") Sichtungen sichtungen,
 		Model m) {
 
-		if(result.hasErrors() || !formIsValid(sichtung)) {
+		if(result.hasErrors()) {
 			log.info("Result Binding has errors or form validation has detected Errors");
 			return "sichtung";
 		}
@@ -74,14 +81,5 @@ public class SichtungController {
 	@ExceptionHandler(SichtungNotFoundException.class)
 	public String handleSichtungNotFoundError() {
 		return "error";
-	}
-
-	private boolean formIsValid(Sichtung sichtung) {
-		String finder = sichtung.getFinder();
-		String location = sichtung.getLocation();
-		String date = sichtung.getDate();
-		String description = sichtung.getDescription();
-
-		return finder.length() > 0 && location.length() > 0 && date.length() > 0 && description.length() > 0;
 	}
 }

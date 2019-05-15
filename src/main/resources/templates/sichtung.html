@@ -51,16 +51,36 @@
 		<h1>Neue Sichtung Erfassen</h1>
 		<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
 			<label for="finder">Finder</label>
-			<input class="form-control" type="text" id="finder" th:field="*{finder}">
+			<input class="form-control" type="text" id="finder" th:field="*{finder}" th:errorclass="alert-danger">
+			<span th:if="${#fields.hasErrors('finder')}" th:errors="*{finder}">Finder zu kurz</span>
+
 
 			<label for="locaton">Fundort</label>
-			<input class="form-control" type="text" id="location" th:field="*{location}">
+			<input class="form-control" type="text" id="location" th:field="*{location}" th:errorclass="alert-danger">
+			<span th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location zu kurz</span>
+
 
 			<label for="date">Datum</label>
-			<input class="form-control" type="text" id="date" th:field="*{date}">
+			<input class="form-control" type="date" id="date" th:field="*{date}" th:errorclass="alert-danger">
+			<span th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date muss ausgefüllt sein</span>
+
+
+			<div class="form-check" th:each="cb: *{daytimecbs}">
+				<input class="form-check-input" type="checkbox" th:field="*{daytime}" th:value="${cb}" th:errorclass="alert-danger">
+				<label class="form-check-label" for="${#ids.prev('daytime')}" th:text="${cb}">morgens</label>
+			</div>
+			<span th:if="${#fields.hasErrors('daytimecbs')}" th:errors="*{daytimecbs}">Checkboxen dürfen nicht leer sein</span>
+
+
+			<label for="rating">Rating</label>
+			<select class="form-control" id="rating" th:field="*{rating}" th:errorclass="alert-danger">
+				<option th:each="sb: *{ratingsbs}" th:text="${sb}" th:value="${sb}"></option>
+			</select>
 
 			<label for="description">Beschreibung</label>
-			<input class="form-control" type="text" id="description" th:field="*{description}">
+			<input class="form-control" type="text" id="description" th:field="*{description}" th:errorclass="alert-danger">
+			<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Darf nicht leer oder länger als 80 Zeichen sein</span>
+
 
 			<input class="btn btn-dark" type="submit" value="Abschicken">
 
@@ -72,19 +92,23 @@
 				<tr>
 					<td scope="col">Nr.</td>
 					<td scope="col">Datum</td>
+					<td scope="col">Tageszeit</td>
 					<td scope="col">Fundort</td>
 					<td scope="col">Finder</td>
 					<td scope="col">Beschreibung</td>
+					<td scope="col">Rating</td>
 					<td scope="col">[edit]</td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="s, iter: ${sichtungen.list}">
 					<td th:text="${iter.index}" scope="row">1</td>
-					<td th:text="${s.finder}">Peter</td>
-					<td th:text="${s.location}">Unter den Eichen</td>
 					<td th:text="${s.date}">01.01.2019</td>
+					<td><span th:each="dt: ${s.daytime}" th:text="${dt}" style="margin-right: 6px;"></span></td>
+					<td th:text="${s.location}">Unter den Eichen</td>
+					<td th:text="${s.finder}">Peter</td>
 					<td th:text="${s.description}">Herr Weitz schießt 17 Feuerwerkskörper in die Luft</td>
+					<td th:text="${s.rating}">*</td>
 					<td><a th:href="@{'/sichtung/' + ${iter.index}}">[edit]</a></td>
 				</tr>
 			</tbody>
