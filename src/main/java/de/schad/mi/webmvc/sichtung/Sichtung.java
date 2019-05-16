@@ -2,14 +2,14 @@ package de.schad.mi.webmvc.sichtung;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import de.schad.mi.webmvc.annotations.Siebzehnhaft;
 
 /**
  * Sichtung
@@ -19,7 +19,7 @@ public class Sichtung {
     private String[] daytimecbs = {"morgens", "mittags", "abends"};
     private String[] ratingsbs = {"*", "**", "***", "****", "*****"};
 
-    @Size(min = 3, message = "Muss mindestens *{min} Zeichen lang sein")
+    @Size(min = 3, message = "Muss mindestens {min} Zeichen lang sein")
     private String finder;
 
     @NotBlank(message = "Dieses Feld darf nicht leer sein")
@@ -32,8 +32,9 @@ public class Sichtung {
     @NotNull(message = "Mindestens eins auswählen")
     private String[] daytime;
 
-    @Size(max = 80, message = "Dieses Feld darf maximal *{max} Zeichen enthalten und darf nicht leer sein")
+    @Size(max = 80, message = "Dieses Feld darf maximal {max} Zeichen enthalten und darf nicht leer sein")
     @NotBlank
+    @Siebzehnhaft
     private String description;
 
     private String rating;

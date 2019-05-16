@@ -1,7 +1,5 @@
 package de.schad.mi.webmvc.sichtung;
 
-import java.time.LocalDate;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -24,8 +22,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class SichtungController {
 
 	Logger log = LoggerFactory.getLogger(SichtungController.class);
-
-	private String[] daytimecbs = {"morgens", "mittags", "abends"};
 
 	@ModelAttribute("sichtungen")
 	public void initListe(Model m) {
