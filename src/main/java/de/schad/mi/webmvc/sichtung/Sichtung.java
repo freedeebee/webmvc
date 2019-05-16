@@ -3,6 +3,7 @@ package de.schad.mi.webmvc.sichtung;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
@@ -19,22 +20,22 @@ public class Sichtung {
     private String[] daytimecbs = {"morgens", "mittags", "abends"};
     private String[] ratingsbs = {"*", "**", "***", "****", "*****"};
 
-    @Size(min = 3, message = "Muss mindestens {min} Zeichen lang sein")
+    @Size(min = 3, message = "{sichtung.form.error.name}")
     private String finder;
 
-    @NotBlank(message = "Dieses Feld darf nicht leer sein")
+    @NotBlank(message = "{sichtung.form.error.location}")
     private String location;
 
-    @PastOrPresent(message = "Datum muss in der Zukunft liegen")
+    @PastOrPresent(message = "{sichtung.form.error.date.future}")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "{sichtung.form.error.date.notnull}")
     private LocalDate date;
 
-    @NotNull(message = "Mindestens eins auswählen")
+    @NotEmpty(message = "{sichtung.form.error.daytime}")
     private String[] daytime;
 
-    @Size(max = 80, message = "Dieses Feld darf maximal {max} Zeichen enthalten und darf nicht leer sein")
-    @NotBlank
-    @Siebzehnhaft
+    @Size(min = 1, max = 80, message = "{sichtung.form.error.description.size}")
+    @Siebzehnhaft(message = "{sichtung.form.error.description.siebzehn}")
     private String description;
 
     private String rating;

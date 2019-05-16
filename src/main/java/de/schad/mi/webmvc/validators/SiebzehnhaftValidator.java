@@ -16,10 +16,7 @@ public class SiebzehnhaftValidator implements ConstraintValidator<Siebzehnhaft, 
 
 	@Override
 	public boolean isValid(String message, ConstraintValidatorContext ctx) {
-
-		boolean containsSiebzehn = message.toLowerCase().contains("siebzehn") || message.contains("17");
-
-		return containsSiebzehn;
+		return message.toLowerCase().contains("siebzehn") || message.contains("17");
 	}
 
 }

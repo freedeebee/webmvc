@@ -3,16 +3,14 @@
 <head>
 	<title>Sichtung</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<meta charset="utf-8" />
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 	<style>
-		input {
-			margin-bottom: 1.8rem;
-		}
-
 		.hero-image {
 
 			background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://picsum.photos/1920/400?random");
@@ -36,6 +34,28 @@
 		table {
 			padding-bottom: 3.6rem;
 		}
+
+		.form-item {
+			margin-bottom: 1.8rem;
+		}
+
+		.form-item span {
+			color: red;
+			font-size: .813em;
+		}
+
+		.form-item input,
+		.form-item select {
+			width: 40%;
+		}
+
+		.mb {
+			margin-bottom: 1.8rem;
+		}
+
+		.float-right {
+			float: right;
+		}
 	</style>
 </head>
 
@@ -43,61 +63,81 @@
 	<div class="hero-image">
 		<div class="hero-text">
 			<h1>17</h1>
-			<p>Siebzehn ist die optimale Anzahl</p>
+			<p th:text="#{sichtung.hero}">ABC</p>
 		</div>
 	</div>
 
 	<div class="container">
-		<h1>Neue Sichtung Erfassen</h1>
-		<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
-			<label for="finder">Finder</label>
-			<input class="form-control" type="text" id="finder" th:field="*{finder}" th:errorclass="alert-danger">
-			<span th:if="${#fields.hasErrors('finder')}" th:errors="*{finder}">Finder zu kurz</span>
+		<h1 th:text="#{sichtung.form.headline}">Neue Sichtung Erfassen</h1>
 
+		<div class="dropdown show float-right">
+			<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{lang.button}">
+				Sprache
+			</a>
 
-			<label for="locaton">Fundort</label>
-			<input class="form-control" type="text" id="location" th:field="*{location}" th:errorclass="alert-danger">
-			<span th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location zu kurz</span>
-
-
-			<label for="date">Datum</label>
-			<input class="form-control" type="date" id="date" th:field="*{date}" th:errorclass="alert-danger">
-			<span th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date muss ausgefüllt sein</span>
-
-
-			<div class="form-check" th:each="cb: *{daytimecbs}">
-				<input class="form-check-input" type="checkbox" th:field="*{daytime}" th:value="${cb}" th:errorclass="alert-danger">
-				<label class="form-check-label" for="${#ids.prev('daytime')}" th:text="${cb}">morgens</label>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				<a class="dropdown-item" th:href="@{?lang=de}">Deutsch</a>
+				<a class="dropdown-item" th:href="@{?lang=en}">English</a>
+				<a class="dropdown-item" th:href="@{?lang=ja}">日本語</a>
 			</div>
-			<span th:if="${#fields.hasErrors('daytimecbs')}" th:errors="*{daytimecbs}">Checkboxen dürfen nicht leer sein</span>
+		</div>
 
+		<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
+			<div class="form-item">
+				<label for="finder" th:text="#{sichtung.form.name}">Finder</label>
+				<input class="form-control" type="text" id="finder" th:field="*{finder}" th:errorclass="alert-danger">
+				<span th:if="${#fields.hasErrors('finder')}" th:errors="*{finder}">Finder zu kurz</span>
+			</div>
 
-			<label for="rating">Rating</label>
-			<select class="form-control" id="rating" th:field="*{rating}" th:errorclass="alert-danger">
-				<option th:each="sb: *{ratingsbs}" th:text="${sb}" th:value="${sb}"></option>
-			</select>
+			<div class="form-item">
+				<label for="locaton" th:text="#{sichtung.form.location}">Fundort</label>
+				<input class="form-control" type="text" id="location" th:field="*{location}" th:errorclass="alert-danger">
+				<span th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location zu kurz</span>
+			</div>
 
-			<label for="description">Beschreibung</label>
-			<input class="form-control" type="text" id="description" th:field="*{description}" th:errorclass="alert-danger">
-			<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Darf nicht leer oder länger als 80 Zeichen sein</span>
+			<div class="form-item">
+				<label for="date" th:text="#{sichtung.form.date}">Datum</label>
+				<input class="form-control" type="date" id="date" th:field="*{date}" th:errorclass="alert-danger">
+				<span th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date muss ausgefüllt sein</span>
+			</div>
 
+			<div class="form-item">
+				<div class="form-check" th:each="cb: *{daytimecbs}">
+					<input class="form-check-input" type="checkbox" th:field="*{daytime}" th:value="${cb}" th:errorclass="alert-danger">
+					<label class="form-check-label" for="${#ids.prev('daytime')}" th:text="${cb}">morgens</label>
+				</div>
+				<span th:if="${#fields.hasErrors('daytimecbs')}" th:errors="*{daytimecbs}">Checkboxen dürfen nicht leer sein</span>
+			</div>
 
-			<input class="btn btn-dark" type="submit" value="Abschicken">
+			<div class="form-item">
+				<label for="rating" th:text="#{sichtung.form.rating}">Rating</label>
+				<select class="form-control" id="rating" th:field="*{rating}" th:errorclass="alert-danger">
+					<option th:each="sb: *{ratingsbs}" th:text="${sb}" th:value="${sb}"></option>
+				</select>
+			</div>
+
+			<div class="form-item">
+				<label for="description" th:text="#{sichtung.form.description}">Beschreibung</label>
+				<input class="form-control" type="text" id="description" th:field="*{description}" th:errorclass="alert-danger">
+				<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Darf nicht leer oder länger als 80 Zeichen sein</span>
+			</div>
+
+			<input class="btn btn-dark mb" type="submit" th:value="#{sichtung.form.submit}">
 
 		</form>
 
-		<h2>Bisherige Sichtungen</h2>
+		<h2 th:text="#{sichtung.table.headline}">Bisherige Sichtungen</h2>
 		<table class="table table-striped" th:if="${#lists.size(sichtungen.list)} > 0">
 			<thead>
 				<tr>
-					<td scope="col">Nr.</td>
-					<td scope="col">Datum</td>
-					<td scope="col">Tageszeit</td>
-					<td scope="col">Fundort</td>
-					<td scope="col">Finder</td>
-					<td scope="col">Beschreibung</td>
-					<td scope="col">Rating</td>
-					<td scope="col">[edit]</td>
+					<td scope="col" th:text="#{sichtung.table.number}">Nr.</td>
+					<td scope="col" th:text="#{sichtung.table.date}">Datum</td>
+					<td scope="col" th:text="#{sichtung.table.daytime}">Tageszeit</td>
+					<td scope="col" th:text="#{sichtung.table.location}">Fundort</td>
+					<td scope="col" th:text="#{sichtung.table.name}">Finder</td>
+					<td scope="col" th:text="#{sichtung.table.description}">Beschreibung</td>
+					<td scope="col" th:text="#{sichtung.table.rating}">Rating</td>
+					<td scope="col" th:text="#{sichtung.table.edit}">[edit]</td>
 				</tr>
 			</thead>
 			<tbody>
