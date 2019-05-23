@@ -2,6 +2,10 @@ package de.schad.mi.webmvc.sichtung;
 
 import java.time.LocalDate;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -12,13 +16,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import de.schad.mi.webmvc.annotations.Siebzehnhaft;
 
-/**
- * Sichtung
- */
+@Entity
 public class Sichtung {
 
+    @Transient
     private String[] daytimecbs = {"morgens", "mittags", "abends"};
+    @Transient
     private String[] ratingsbs = {"*", "**", "***", "****", "*****"};
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     @Size(min = 3, message = "{sichtung.form.error.name}")
     private String finder;
@@ -51,6 +59,14 @@ public class Sichtung {
         this.rating = rating;
     }
 
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
     public String[] getDaytimecbs() {
         return this.daytimecbs;
     }
