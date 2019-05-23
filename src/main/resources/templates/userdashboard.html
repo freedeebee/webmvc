@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col">
                 <h1>User Dashboard</h1>
-                
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -28,10 +28,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Alfons123</td>
-                            <td>Alfons von Quack</td>
-                            <td>Nein</td>
+                        <tr th:each="u: ${users}">
+                            <td th:text="${u.loginname}">Alfons123</td>
+                            <td th:text="${u.fullname}">Alfons von Quack</td>
+                            <td th:text="${u.active}">Nein</td>
                         </tr>
                     </tbody>
                 </table>
@@ -43,7 +43,7 @@
                 <a th:href="@{/users/create}" class="btn btn-dark">Neuer Benutzer</a>
             </div>
         </div>
-        
+
     </div>
 </body>
 </html>
