@@ -29,7 +29,7 @@ public class UsersController {
 
     @GetMapping
     public String getUserDashboard(Model m) {
-        m.addAttribute("users", repository.findAll());
+        m.addAttribute("users", repository.findAllByOrderByLoginnameAsc());
         return "userdashboard";
     }
 
@@ -51,7 +51,7 @@ public class UsersController {
         }
 
         Optional<User> databaseUser = repository.findById(user.getLoginname());
-        if (databaseUser != null) {
+        if (databaseUser.isPresent()) {
             m.addAttribute("usernametaken", "Username is already taken");
             return "userform";
         }
