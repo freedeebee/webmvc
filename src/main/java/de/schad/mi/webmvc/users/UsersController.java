@@ -1,5 +1,6 @@
 package de.schad.mi.webmvc.users;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -7,13 +8,11 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/users")
@@ -27,9 +26,20 @@ public class UsersController {
         this.repository = repository;
     }
 
-    @GetMapping
+    @GetMapping("")
     public String getUserDashboard(Model m) {
-        m.addAttribute("users", repository.findAllByOrderByLoginnameAsc());
+        logger.info("falsch");
+        m.addAttribute("users", repository.findAll(Sort.by(Sort.Order.asc("loginname").ignoreCase())));
+        return "userdashboard";
+    }
+
+    @GetMapping(value = "", params = "search")
+    public String filterUserDashboard(Model m, @RequestParam("search") String searchParam) {
+        logger.info("Searchparam: {}", searchParam);
+        m.addAttribute(
+                "users", repository.findAllByLoginnameContainingIgnoreCase(
+                    Sort.by(Sort.Order.asc("loginname").ignoreCase()), searchParam)
+                );
         return "userdashboard";
     }
 

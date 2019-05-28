@@ -44,7 +44,7 @@
 			</div>
 
 			<div class="form-item">
-				<label for="locaton" th:text="#{sichtung.form.location}">Fundort</label>
+				<label for="location" th:text="#{sichtung.form.location}">Fundort</label>
 				<input class="form-control" type="text" id="location" th:field="*{location}" th:errorclass="alert-danger">
 				<span th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location zu kurz</span>
 			</div>
@@ -81,7 +81,7 @@
 		</form>
 
 		<h2 th:text="#{sichtung.table.headline}">Bisherige Sichtungen</h2>
-		<table class="table table-striped" th:if="${#lists.size(sichtungen.list)} > 0">
+		<table class="table table-striped" th:if="${#lists.size(sichtungen)} > 0">
 			<thead>
 				<tr>
 					<td scope="col" th:text="#{sichtung.table.number}">Nr.</td>
@@ -95,7 +95,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="s, iter: ${sichtungen.list}">
+				<tr th:each="s, iter: ${sichtungen}">
 					<td th:text="${iter.index}" scope="row">1</td>
 					<td th:text="${s.date}">01.01.2019</td>
 					<td><span th:each="dt: ${s.daytime}" th:text="${dt}" style="margin-right: 6px;"></span></td>
@@ -103,7 +103,7 @@
 					<td th:text="${s.finder}">Peter</td>
 					<td th:text="${s.description}">Herr Weitz schießt 17 Feuerwerkskörper in die Luft</td>
 					<td th:text="${s.rating}">*</td>
-					<td><a th:href="@{'/sichtung/' + ${iter.index}}">[edit]</a></td>
+					<td><a th:href="@{'/sichtung/' + ${s.id}}">[edit]</a></td>
 				</tr>
 			</tbody>
 		</table>
