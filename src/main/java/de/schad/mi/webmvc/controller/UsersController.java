@@ -1,16 +1,13 @@
 package de.schad.mi.webmvc.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -20,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import de.schad.mi.webmvc.model.data.User;
-import de.schad.mi.webmvc.repository.UserRepository;;
+import de.schad.mi.webmvc.repository.UserRepository;
+import de.schad.mi.webmvc.services.UploadService;;
 
 @Controller
 @RequestMapping("/users")
@@ -29,12 +27,15 @@ public class UsersController {
     private Logger logger = LoggerFactory.getLogger(UsersController.class);
 
     private final UserRepository repository;
+    private final UploadService uploadService;
 
     @Value("${file.upload.directory}")
     private String UPLOADDIR;
 
-    public UsersController(UserRepository repository) {
+    @Autowired
+    public UsersController(UserRepository repository, UploadService uploadService) {
         this.repository = repository;
+        this.uploadService = uploadService;
     }
 
     @GetMapping("")
@@ -77,7 +78,14 @@ public class UsersController {
             return "userform";
         }
 
-        String status = abspeichern(file);
+        String filename = "avatar-" + user.getLoginname() + "." + file.getOriginalFilename().split("\\.")[1];
+
+        String status = "";
+        try {
+            status = uploadService.store(file.getInputStream(), filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         logger.info("Status fileupload: {}", status);
 
         repository.save(user);
@@ -98,25 +106,4 @@ public class UsersController {
                 Sort.by(Sort.Order.asc("loginname").ignoreCase())));
         return "userdashboard";
     }
-
-    private String abspeichern(MultipartFile datei) {
-
-        logger.info(UPLOADDIR);
-        // Metainformationen zu Upload auslesen
-        String filename = datei.getOriginalFilename();
-        long size = datei.getSize();
-        String contenttype = datei.getContentType();
-        // Dateiinhalt kopieren in Upload-Verzeichnis
-        String status;
-        try {
-            InputStream input = datei.getInputStream();
-            Path zielpfad = Paths.get(UPLOADDIR, filename);
-            Files.copy(input, zielpfad);
-            status = "ok";
-        } catch (IOException exc) {
-            status = exc.getMessage();
-        }
-        return String.format("Datei %s (%s Bytes, %s) Status %s", filename, size, contenttype, status);
-    }
-
 }
