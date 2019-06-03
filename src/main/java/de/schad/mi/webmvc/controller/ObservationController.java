@@ -4,7 +4,7 @@ import javax.validation.Valid;
 
 import de.schad.mi.webmvc.exceptions.SichtungNotFoundException;
 import de.schad.mi.webmvc.model.data.Observation;
-import de.schad.mi.webmvc.repository.ObservationRepository;
+import de.schad.mi.webmvc.services.ObservationService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,35 +27,35 @@ import java.util.Optional;
 @SessionAttributes(names = {"sichtungen"})
 public class ObservationController {
 
-	private final ObservationRepository repository;
+	private final ObservationService observationService;
 	private final Logger logger = LoggerFactory.getLogger(ObservationController.class);
 
 
 	@Autowired
-	public ObservationController(ObservationRepository repository) {
-		this.repository = repository;
+	public ObservationController(ObservationService observationService) {
+		this.observationService = observationService;
 	}
 
 
 	@GetMapping("/sichtung")
 	public String getForm(Model m) {
 		m.addAttribute("sichtungform", new Observation());
-		m.addAttribute("sichtungen", repository.findAll());
+		m.addAttribute("sichtungen", observationService.findAll());
 		return "sichtung";
 	}
 
 	@GetMapping("/sichtung/{id}")
 	public String alterSichtung(@PathVariable long id, Model m) {
 
-		Optional<Observation> found = repository.findById(id);
+		Optional<Observation> found = observationService.findById(id);
 
 		if(found.isPresent()) {
 			m.addAttribute("sichtungform", found);
-			repository.delete(found.get());
-			m.addAttribute("sichtungen", repository.findAll());
+			observationService.delete(found.get());
+			m.addAttribute("sichtungen", observationService.findAll());
 			return "sichtung";
 		} else {
-			m.addAttribute("sichtungen", repository.findAll());
+			m.addAttribute("sichtungen", observationService.findAll());
 			return "sichtung";
 		}
 	}
@@ -71,11 +71,11 @@ public class ObservationController {
 			return "sichtung";
 		}
 
-		repository.save(sichtung);
+		observationService.save(sichtung);
 
 		// Clear form
 		m.addAttribute("sichtungform", new Observation());
-		m.addAttribute("sichtungen", repository.findAll());
+		m.addAttribute("sichtungen", observationService.findAll());
 		return "sichtung";
 	}
 
