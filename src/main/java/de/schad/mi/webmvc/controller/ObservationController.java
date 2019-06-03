@@ -3,8 +3,8 @@ package de.schad.mi.webmvc.controller;
 import javax.validation.Valid;
 
 import de.schad.mi.webmvc.exceptions.SichtungNotFoundException;
-import de.schad.mi.webmvc.repository.SichtungRepository;
-import de.schad.mi.webmvc.model.data.Sichtung;
+import de.schad.mi.webmvc.model.data.Observation;
+import de.schad.mi.webmvc.repository.ObservationRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,20 +25,21 @@ import java.util.Optional;
 
 @Controller
 @SessionAttributes(names = {"sichtungen"})
-public class SichtungController {
+public class ObservationController {
 
-	private final SichtungRepository repository;
+	private final ObservationRepository repository;
+	private final Logger logger = LoggerFactory.getLogger(ObservationController.class);
+
 
 	@Autowired
-	public SichtungController(SichtungRepository repository) {
+	public ObservationController(ObservationRepository repository) {
 		this.repository = repository;
 	}
 
-	Logger log = LoggerFactory.getLogger(SichtungController.class);
 
 	@GetMapping("/sichtung")
 	public String getForm(Model m) {
-		m.addAttribute("sichtungform", new Sichtung());
+		m.addAttribute("sichtungform", new Observation());
 		m.addAttribute("sichtungen", repository.findAll());
 		return "sichtung";
 	}
@@ -46,7 +47,7 @@ public class SichtungController {
 	@GetMapping("/sichtung/{id}")
 	public String alterSichtung(@PathVariable long id, Model m) {
 
-		Optional<Sichtung> found = repository.findById(id);
+		Optional<Observation> found = repository.findById(id);
 
 		if(found.isPresent()) {
 			m.addAttribute("sichtungform", found);
@@ -61,19 +62,19 @@ public class SichtungController {
 
 	@PostMapping("/sichtung")
 	public String getFormInput(
-		@Valid @ModelAttribute("sichtungform") Sichtung sichtung,
+		@Valid @ModelAttribute("sichtungform") Observation sichtung,
 		BindingResult result,
 		Model m) {
 
 		if(result.hasErrors()) {
-			log.info("Result Binding has errors or form validation has detected Errors");
+			logger.info("Result Binding has errors or form validation has detected Errors");
 			return "sichtung";
 		}
 
 		repository.save(sichtung);
 
 		// Clear form
-		m.addAttribute("sichtungform", new Sichtung());
+		m.addAttribute("sichtungform", new Observation());
 		m.addAttribute("sichtungen", repository.findAll());
 		return "sichtung";
 	}

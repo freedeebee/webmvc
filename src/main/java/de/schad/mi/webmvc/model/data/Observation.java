@@ -17,7 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import de.schad.mi.webmvc.annotations.Siebzehnhaft;
 
 @Entity
-public class Sichtung {
+public class Observation {
 
     @Transient
     private String[] daytimecbs = {"morgens", "mittags", "abends"};
@@ -48,9 +48,9 @@ public class Sichtung {
 
     private String rating;
 
-    public Sichtung() {}
+    public Observation() {}
 
-    public Sichtung(String finder, String location, LocalDate date, String[] daytime, String description, String rating) {
+    public Observation(String finder, String location, LocalDate date, String[] daytime, String description, String rating) {
         this.finder = finder;
         this.location = location;
         this.date = date;
