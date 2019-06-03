@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import de.schad.mi.webmvc.model.data.User;
-import de.schad.mi.webmvc.repository.UserRepository;
-import de.schad.mi.webmvc.services.UploadService;;
+import de.schad.mi.webmvc.services.ImageService;
+import de.schad.mi.webmvc.services.UserService;
 
 @Controller
 @RequestMapping("/users")
@@ -26,21 +25,18 @@ public class UsersController {
 
     private Logger logger = LoggerFactory.getLogger(UsersController.class);
 
-    private final UserRepository repository;
-    private final UploadService uploadService;
-
-    @Value("${file.upload.directory}")
-    private String UPLOADDIR;
+    private final UserService userService;
+    private final ImageService imageService;
 
     @Autowired
-    public UsersController(UserRepository repository, UploadService uploadService) {
-        this.repository = repository;
-        this.uploadService = uploadService;
+    public UsersController(UserService userService, ImageService imageService) {
+        this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("")
     public String getUserDashboard(Model m) {
-        m.addAttribute("users", repository.findAll(Sort.by(Sort.Order.asc("loginname").ignoreCase())));
+        m.addAttribute("users", userService.findAll(Sort.by(Sort.Order.asc("loginname").ignoreCase())));
         return "userdashboard";
     }
 
@@ -48,7 +44,7 @@ public class UsersController {
     public String filterUserDashboard(Model m, @RequestParam("search") String searchParam) {
         logger.info("Searchparam: {}", searchParam);
         m.addAttribute(
-                "users", repository.findAllByLoginnameContainingIgnoreCase(
+                "users", userService.findFiltered(
                     Sort.by(Sort.Order.asc("loginname").ignoreCase()), searchParam)
                 );
         return "userdashboard";
@@ -72,7 +68,7 @@ public class UsersController {
             return "userform";
         }
 
-        Optional<User> databaseUser = repository.findById(user.getLoginname());
+        Optional<User> databaseUser = userService.findById(user.getLoginname());
         if (databaseUser.isPresent()) {
             m.addAttribute("usernametaken", "Username is already taken");
             return "userform";
@@ -82,13 +78,13 @@ public class UsersController {
 
         String status = "";
         try {
-            status = uploadService.store(file.getInputStream(), filename);
+            status = imageService.store(file.getInputStream(), filename);
         } catch (IOException e) {
             e.printStackTrace();
         }
         logger.info("Status fileupload: {}", status);
 
-        repository.save(user);
+        userService.save(user);
 
         return "redirect:/users";
     }
@@ -96,13 +92,13 @@ public class UsersController {
     @GetMapping("/delete")
     public String deleteUser(@RequestParam("user") String loginname, Model m) {
 
-        Optional<User> user = repository.findById(loginname);
+        Optional<User> user = userService.findById(loginname);
 
         if(user.isPresent()) {
-            repository.delete(user.get());
+            userService.delete(user.get());
         }
 
-        m.addAttribute("users", repository.findAll(
+        m.addAttribute("users", userService.findAll(
                 Sort.by(Sort.Order.asc("loginname").ignoreCase())));
         return "userdashboard";
     }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UploadServiceImpl implements UploadService {
+public class ImageServiceImpl implements ImageService {
 
     @Value("${file.upload.directory}")
     private String UPLOADDIR;
