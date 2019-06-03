@@ -20,7 +20,7 @@
 
                 <form th:action="@{/users}" th:method="GET">
                     <input class="form-control" type="search" th:name="search" th:placeholder="Search...">
-                    <input type="submit" th:value="Search">
+                    <input type="submit" th:value="Search" class="btn btn-primary">
                 </form>
 
 
@@ -30,6 +30,8 @@
                             <td>Login Name</td>
                             <td>Full Name</td>
                             <td>Aktiv?</td>
+                            <td>Delete</td>
+                            <td>Edit</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +39,14 @@
                             <td th:text="${u.loginname}">Alfons123</td>
                             <td th:text="${u.fullname}">Alfons von Quack</td>
                             <td th:text="${u.active}">Nein</td>
+                            <td>
+                                <a th:href="|@{/users/delete(user=${u.loginname})}|" class="btn btn-danger">delete user</a>
+                            </td>
+                            <td>
+                                <form th:action="@{/users/edit}">
+                                    <input type="submit" value="edit user" class="btn btn-primary">
+                                </form>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

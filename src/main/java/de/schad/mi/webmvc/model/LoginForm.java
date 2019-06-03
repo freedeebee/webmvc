@@ -1,4 +1,4 @@
-package de.schad.mi.webmvc.login;
+package de.schad.mi.webmvc.model;
 
 /**
  * LoginForm

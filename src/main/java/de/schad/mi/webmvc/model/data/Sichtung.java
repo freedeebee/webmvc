@@ -1,4 +1,4 @@
-package de.schad.mi.webmvc.sichtung;
+package de.schad.mi.webmvc.model.data;
 
 import java.time.LocalDate;
 
@@ -66,7 +66,7 @@ public class Sichtung {
     public void setId(long id) {
         this.id = id;
     }
-    
+
     public String[] getDaytimecbs() {
         return this.daytimecbs;
     }

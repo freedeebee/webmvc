@@ -1,4 +1,4 @@
-package de.schad.mi.webmvc.users;
+package de.schad.mi.webmvc.model.data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

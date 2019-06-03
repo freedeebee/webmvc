@@ -1,6 +1,10 @@
-package de.schad.mi.webmvc.sichtung;
+package de.schad.mi.webmvc.controller;
 
 import javax.validation.Valid;
+
+import de.schad.mi.webmvc.exceptions.SichtungNotFoundException;
+import de.schad.mi.webmvc.repository.SichtungRepository;
+import de.schad.mi.webmvc.model.data.Sichtung;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

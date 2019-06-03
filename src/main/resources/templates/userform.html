@@ -15,7 +15,7 @@
 
 <body>
 	<div class="container">
-        <form th:action="@{/users/create}" th:method="POST" th:object="${userform}">
+        <form th:action="@{/users/create}" th:method="POST" th:object="${userform}" enctype="multipart/form-data">
             <div class="form-item">
 				<label for="loginname">Login Name</label>
 				<input class="form-control" type="text" id="loginname" th:field="*{loginname}" th:errorclass="alert-danger">
@@ -33,6 +33,11 @@
 				<label for="fullname">Full Name</label>
 				<input class="form-control" type="text" id="fullname" th:field="*{fullname}" th:errorclass="alert-danger">
 				<span th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}">Finder zu kurz</span>
+			</div>
+
+			<div class="form-item">
+				<label for="avatar">Avatar</label>
+				<input class="form-control" type="file" name="avatar" id="avatar">
 			</div>
 
 			<input class="btn btn-dark mb" type="submit" value="Benutzer anlegen">
