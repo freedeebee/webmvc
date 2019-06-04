@@ -1,20 +1,51 @@
 <!doctype html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<title>Login</title>
+	<head>
 
-	<meta charset="utf-8" />
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-</head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<body>
-	<form action="/login" method="POST">
-		<label for="name">Name</label>
-		<input type="text" id="name" name="name">
-		<label for="password">Passwort</label>
-		<input type="password" id="password" name="password">
-		<input type="submit" value="Login">
-	</form>
-</body>
+		<!-- CSS -->
+		
+			<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+		
+
+	</head>
+	<body>
+
+		<div class="login">
+			<nav class="nav">
+				<div class="row">
+					<div class="column">
+						<div class="nav__inner">
+							<a class="logo" th:href="@{/}"><span class="track">track</span>17</a>
+							<a th:href="@{/sichtung}">Sichtungen</a>
+							<a th:href="@{/login}">Login</a>
+							<a href="">DE <svg viewbox="0 0 8 8" class="icon"><use xlink:href="/images/open-iconic.svg#globe"></use></svg></a>
+						</div>
+					</div>
+				</div>
+			</nav>
+
+			<div class="row">
+				<div class="column large-3"></div>
+				<div class="column large-6 background-white">
+					<div class="login__wrapper">
+						<h1 class="h1">Login</h1>
+						<p>Noch keinen Account? <a href=""><span class="login__register">Jetzt Registrieren</span></a></p>
+						<form action="" th:method="POST">
+							<input class="input login__input" type="text" name="username" placeholder="Username">
+							<input class="input login__input" type="password" name="password" placeholder="Password">
+							<input class="login__button" type="submit" value="LOG IN">
+						</form>
+						<p>- oder -</p>
+						<a href="" class="login__button login__button--yellow">REGISTRIEREN</a>
+					</div>
+
+				</div>
+				<div class="column large-3"></div>
+			</div>
+		</div>
+
+	</body>
 </html>

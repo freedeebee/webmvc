@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+
+	</head>
+	<body>
+
+		<div class="home">
+            <nav class="nav">
+                <div class="row">
+                    <div class="column">
+                        <div class="nav__inner">
+                            <a class="logo" th:href="@{/}"><span class="track">track</span>17</a>
+                            <a th:href="@{/sichtung}">Sichtungen</a>
+                            <a th:href="@{/login}">Login</a>
+                            <a href="">DE <svg viewbox="0 0 8 8" class="icon"><use xlink:href="/images/open-iconic.svg#globe"></use></svg></a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="row">
+                <div class="column">
+                    <h1 class="h1"><span class="track">track</span>17</h1>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="column large-6">
+                    <p>Dein Persönlicher Ort um Sichtungen der Zahl 17 im Alltag zu tracken! Zögere nicht, Sieh dir an was andere gesehen haben und trage deine eigenen Erlebnisse ein!</p>
+                    <a class="button" th:href="@{/sichtung}">Sichtungen</a>
+                </div>
+                <div class="column large-6">
+                    <img src="https://picsum.photos/1920/1080?grayscale" alt="">
+                </div>
+            </div>
+        </div>
+
+	</body>
+</html>
