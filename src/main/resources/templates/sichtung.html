@@ -1,127 +1,122 @@
 <!doctype html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<title>Sichtung</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" th:href="@{css/sichtung.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	<meta charset="utf-8" />
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<head>
 
-</head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<body>
+		<!-- CSS -->
+		
+			<link rel="stylesheet" th:href="@{/css/main.css}">
+		
+	</head>
+	<body>
 
-	<nav class="nav">
-		<div class="row">
-			<div class="column">
-				<div class="nav__inner">
-					<a class="logo" th:href="@{/}"><span class="track">track</span>17</a>
-					<a th:href="@{/sichtung}">Sichtungen</a>
-					<a th:href="@{/login}">Login</a>
-					<a href="">DE <svg viewbox="0 0 8 8" class="icon"><use xlink:href="/images/open-iconic.svg#globe"></use></svg></a>
+		<nav class="nav">
+			<div class="row">
+				<div class="column">
+					<div class="nav__inner">
+						<a class="logo" th:href="@{/}"><span class="track">track</span>17</a>
+						<a th:href="@{/sichtung}">Sichtungen</a>
+						<a th:href="@{/login}">Login</a>
+						<a href="">DE <svg viewbox="0 0 8 8" class="icon"><use xlink:href="/images/open-iconic.svg#globe"></use></svg></a>
+					</div>
 				</div>
 			</div>
-		</div>
-	</nav>
+		</nav>
 
-	<div class="hero-image">
-		<div class="hero-text">
-			<h1>17</h1>
-			<p th:text="#{sichtung.hero}">ABC</p>
-		</div>
-	</div>
-
-	<div class="container">
-		<h1 th:text="#{sichtung.form.headline}">Neue Sichtung Erfassen</h1>
-
-		<div class="dropdown show float-right">
-			<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{lang.button}">
-				Sprache
-			</a>
-
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-				<a class="dropdown-item" th:href="@{?lang=de}">Deutsch</a>
-				<a class="dropdown-item" th:href="@{?lang=en}">English</a>
-				<a class="dropdown-item" th:href="@{?lang=ja}">日本語</a>
-			</div>
-		</div>
-
-		<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
-			<div class="form-item">
-				<label for="finder" th:text="#{sichtung.form.name}">Finder</label>
-				<input class="form-control" type="text" id="finder" th:field="*{finder}" th:errorclass="alert-danger">
-				<span th:if="${#fields.hasErrors('finder')}" th:errors="*{finder}">Finder zu kurz</span>
-			</div>
-
-			<div class="form-item">
-				<label for="location" th:text="#{sichtung.form.location}">Fundort</label>
-				<input class="form-control" type="text" id="location" th:field="*{location}" th:errorclass="alert-danger">
-				<span th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location zu kurz</span>
-			</div>
-
-			<div class="form-item">
-				<label for="date" th:text="#{sichtung.form.date}">Datum</label>
-				<input class="form-control" type="date" id="date" th:field="*{date}" th:errorclass="alert-danger">
-				<span th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date muss ausgefüllt sein</span>
-			</div>
-
-			<div class="form-item">
-				<div class="form-check" th:each="cb: *{daytimecbs}">
-					<input class="form-check-input" type="checkbox" th:field="*{daytime}" th:value="${cb}" th:errorclass="alert-danger">
-					<label class="form-check-label" for="${#ids.prev('daytime')}" th:text="${cb}">morgens</label>
+		<div class="observation">
+			<div class="row">
+				<div class="column">
+					<h1 class="h1">Aktuelle Sichtungen</h1>
 				</div>
-				<span th:if="${#fields.hasErrors('daytime')}" th:errors="*{daytime}">Checkboxen dürfen nicht leer sein</span>
+			</div>
+			<div class="row">
+				<div class="column">
+
+					<table th:if="${#lists.size(sichtungen)} > 0">
+						<thead>
+							<tr>
+								<td th:text="#{sichtung.table.number}">Nr.</td>
+								<td th:text="#{sichtung.table.date}">Datum</td>
+								<td th:text="#{sichtung.table.daytime}">Tageszeit</td>
+								<td th:text="#{sichtung.table.location}">Fundort</td>
+								<td th:text="#{sichtung.table.name}">Finder</td>
+								<td th:text="#{sichtung.table.description}">Beschreibung</td>
+								<td th:text="#{sichtung.table.rating}">Rating</td>
+								<td th:text="#{sichtung.table.edit}">[edit]</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="s, iter: ${sichtungen}">
+								<td th:text="${iter.index}">1</td>
+								<td th:text="${s.date}">01.01.2019</td>
+								<td><span th:each="dt: ${s.daytime}" th:text="${dt}" style="margin-right: 6px;"></span></td>
+								<td th:text="${s.location}">Unter den Eichen</td>
+								<td th:text="${s.finder}">Peter</td>
+								<td th:text="${s.description}">Herr Weitz schießt 17 Feuerwerkskörper in die Luft</td>
+								<td th:text="${s.rating}">*</td>
+								<td><a th:href="@{'/sichtung/' + ${s.id}}"><svg viewbox="0 0 8 8" class="icon observation__icon"><use xlink:href="/images/open-iconic.svg#pencil"></use></svg></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 
-			<div class="form-item">
-				<label for="rating" th:text="#{sichtung.form.rating}">Rating</label>
-				<select class="form-control" id="rating" th:field="*{rating}" th:errorclass="alert-danger">
-					<option th:each="sb: *{ratingsbs}" th:text="${sb}" th:value="${sb}"></option>
-				</select>
+			<div class="observation__background">
+				<div class="observation__bgbox">
+					<h2>Haben Sie eine 17 gesichtet?</h2>
+					<p>Dann am besten gleich eine neue Sichtung eintragen!</p>
+				</div>
 			</div>
 
-			<div class="form-item">
-				<label for="description" th:text="#{sichtung.form.description}">Beschreibung</label>
-				<input class="form-control" type="text" id="description" th:field="*{description}" th:errorclass="alert-danger">
-				<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Darf nicht leer oder länger als 80 Zeichen sein</span>
+			<div class="row">
+				<div class="column">
+
+					<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
+						<div class="observation__formElem">
+							<input class="input observation__input" type="text" id="finder" th:field="*{finder}" th:errorclass="alert-danger" th:placeholder="#{sichtung.form.name}">
+							<span class="observation__errormessage" th:if="${#fields.hasErrors('finder')}" th:errors="*{finder}">Finder zu kurz</span>
+						</div>
+
+						<div class="observation__formElem">
+							<input class="input observation__input" type="text" id="location" th:field="*{location}" th:errorclass="alert-danger" th:placeholder="#{sichtung.form.location}">
+							<span class="observation__errormessage" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location zu kurz</span>
+						</div>
+
+						<div class="observation__formElem">
+							<input class="input observation__input" type="date" id="date" th:field="*{date}" th:errorclass="alert-danger">
+							<span class="observation__errormessage" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date muss ausgefüllt sein</span>
+						</div>
+
+						<div class="observation__formElem">
+							<div class="form-check" th:each="cb: *{daytimecbs}">
+								<input class="control__input" type="checkbox" th:field="*{daytime}" th:value="${cb}" th:errorclass="alert-danger">
+								<label class="control__label" th:for="${#ids.prev('daytime')}" th:text="${cb}">morgens</label>
+							</div>
+							<span class="observation__errormessage" th:if="${#fields.hasErrors('daytime')}" th:errors="*{daytime}">Checkboxen dürfen nicht leer sein</span>
+						</div>
+
+						<div class="observation__formElem">
+							<label for="rating" th:text="#{sichtung.form.rating}">Rating</label>
+							<select class="select" id="rating" th:field="*{rating}" th:errorclass="alert-danger">
+								<option th:each="sb: *{ratingsbs}" th:text="${sb}" th:value="${sb}"></option>
+							</select>
+						</div>
+
+						<div class="observation__formElem">
+							<input class="input observation__input" type="text" id="description" th:field="*{description}" th:errorclass="alert-danger" th:placeholder="#{sichtung.form.description}">
+							<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Darf nicht leer oder länger als 80 Zeichen sein</span>
+						</div>
+
+						<input class="button" type="submit" th:value="#{sichtung.form.submit}">
+
+					</form>
+					
+				</div>
 			</div>
 
-			<input class="btn btn-dark mb" type="submit" th:value="#{sichtung.form.submit}">
+		</div>
 
-		</form>
-
-		<h2 th:text="#{sichtung.table.headline}">Bisherige Sichtungen</h2>
-		<table class="table table-striped" th:if="${#lists.size(sichtungen)} > 0">
-			<thead>
-				<tr>
-					<td scope="col" th:text="#{sichtung.table.number}">Nr.</td>
-					<td scope="col" th:text="#{sichtung.table.date}">Datum</td>
-					<td scope="col" th:text="#{sichtung.table.daytime}">Tageszeit</td>
-					<td scope="col" th:text="#{sichtung.table.location}">Fundort</td>
-					<td scope="col" th:text="#{sichtung.table.name}">Finder</td>
-					<td scope="col" th:text="#{sichtung.table.description}">Beschreibung</td>
-					<td scope="col" th:text="#{sichtung.table.rating}">Rating</td>
-					<td scope="col" th:text="#{sichtung.table.edit}">[edit]</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="s, iter: ${sichtungen}">
-					<td th:text="${iter.index}" scope="row">1</td>
-					<td th:text="${s.date}">01.01.2019</td>
-					<td><span th:each="dt: ${s.daytime}" th:text="${dt}" style="margin-right: 6px;"></span></td>
-					<td th:text="${s.location}">Unter den Eichen</td>
-					<td th:text="${s.finder}">Peter</td>
-					<td th:text="${s.description}">Herr Weitz schießt 17 Feuerwerkskörper in die Luft</td>
-					<td th:text="${s.rating}">*</td>
-					<td><a th:href="@{'/sichtung/' + ${s.id}}">[edit]</a></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</body>
+	</body>
 </html>
