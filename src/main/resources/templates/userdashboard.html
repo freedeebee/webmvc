@@ -30,6 +30,7 @@
                             <td>Login Name</td>
                             <td>Full Name</td>
                             <td>Aktiv?</td>
+                            <td>Role</td>
                             <td>Delete</td>
                             <td>Edit</td>
                         </tr>
@@ -39,6 +40,7 @@
                             <td th:text="${u.loginname}">Alfons123</td>
                             <td th:text="${u.fullname}">Alfons von Quack</td>
                             <td th:text="${u.active}">Nein</td>
+                            <td th:text="${u.role}"></td>
                             <td>
                                 <a th:href="|@{/users/delete(user=${u.loginname})}|" class="btn btn-danger">delete user</a>
                             </td>

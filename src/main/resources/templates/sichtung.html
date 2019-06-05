@@ -6,9 +6,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- CSS -->
-		
+
 			<link rel="stylesheet" th:href="@{/css/main.css}">
-		
+
 	</head>
 	<body>
 
@@ -75,7 +75,7 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<div sec:authorize="hasRole('MEMBER')" class="row">
 				<div class="column">
 
 					<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
@@ -117,10 +117,17 @@
 						<input class="button" type="submit" th:value="#{sichtung.form.submit}">
 
 					</form>
-					
+
 				</div>
 			</div>
 
+			<div sec:authorize="isAnonymous()" class="row">
+				<div class="column">
+					<h2 class="h2">Noch kein Mitglied?</h2>
+					<p>Sichtungen können nur von Mitgliedern eingetragen werden. Registrieren Sie sich jetzt kostenfrei.</p>
+					<a href="" class="button">REGISTRIEREN</a>
+				</div>
+			</div>
 		</div>
 
 	</body>

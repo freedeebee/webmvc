@@ -1,5 +1,6 @@
 package de.schad.mi.webmvc.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,9 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import de.schad.mi.webmvc.services.ObservationUserDetailsService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+
+    @Autowired ObservationUserDetailsService observationUserDetailsService;
 
     @Bean
     PasswordEncoder getPasswordEncoder() {
@@ -20,13 +25,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(AuthenticationManagerBuilder amb) throws Exception {
-
-        PasswordEncoder encoder = getPasswordEncoder();
-
-        amb.inMemoryAuthentication()
+        amb
+            .inMemoryAuthentication()
             .withUser("admin")
-            .password(encoder.encode("geheim"))
-            .roles("ADMIN");
+            .password(getPasswordEncoder().encode("geheim"))
+            .roles("ADMIN", "MEMBER");
+        amb
+            .userDetailsService(observationUserDetailsService)
+            .passwordEncoder(getPasswordEncoder());
     }
 
     @Override
@@ -46,5 +52,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .logoutSuccessUrl("/")
             .permitAll();
     }
-    
+
 }

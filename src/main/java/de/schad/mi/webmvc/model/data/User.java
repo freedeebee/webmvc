@@ -23,12 +23,15 @@ public class User {
     private String fullname;
     private boolean active;
 
+    private String role;
+
     public User() {}
 
     public User(String loginname, String password, String fullname) {
         this.loginname = loginname;
         this.password = password;
         this.fullname = fullname;
+        this.role = "MEMBER";
         this.active = false;
     }
 
@@ -67,6 +70,14 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getRole() {
+        return this.role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
