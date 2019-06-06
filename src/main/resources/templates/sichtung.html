@@ -75,7 +75,7 @@
 				</div>
 			</div>
 
-			<div sec:authorize="hasRole('MEMBER')" class="row">
+			<div sec:authorize="hasRole('MEMBER') or hasRole('ADMIN')" class="row">
 				<div class="column">
 
 					<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
@@ -111,7 +111,7 @@
 
 						<div class="observation__formElem">
 							<input class="input observation__input" type="text" id="description" th:field="*{description}" th:errorclass="alert-danger" th:placeholder="#{sichtung.form.description}">
-							<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Darf nicht leer oder länger als 80 Zeichen sein</span>
+							<span class="observation__errormessage" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Darf nicht leer oder länger als 80 Zeichen sein</span>
 						</div>
 
 						<input class="button" type="submit" th:value="#{sichtung.form.submit}">

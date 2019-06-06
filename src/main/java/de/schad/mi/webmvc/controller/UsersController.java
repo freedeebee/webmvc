@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import de.schad.mi.webmvc.model.UserCreationForm;
 import de.schad.mi.webmvc.model.data.User;
 import de.schad.mi.webmvc.services.ImageService;
 import de.schad.mi.webmvc.services.UserService;
@@ -59,7 +60,7 @@ public class UsersController {
 
     @PostMapping("/create")
     public String newUser(
-            @Valid @ModelAttribute("userform") User user,
+            @Valid @ModelAttribute("userform") UserCreationForm user,
             @RequestParam("avatar") MultipartFile file,
             BindingResult result,
             Model m) {
@@ -74,17 +75,26 @@ public class UsersController {
             return "userform";
         }
 
-        String filename = "avatar-" + user.getLoginname() + "." + file.getOriginalFilename().split("\\.")[1];
+        String filename = "";
 
-        String status = "";
-        try {
-            status = imageService.store(file.getInputStream(), filename);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!file.isEmpty()) {
+            filename = "avatar-" + user.getLoginname() + "." + file.getOriginalFilename().split("\\.")[1];
+
+            String status = "";
+            try {
+                status = imageService.store(file.getInputStream(), filename);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    
+            if (status.equals("ok")) {
+                user.setAvatar(file);
+            }
         }
-        logger.info("Status fileupload: {}", status);
 
-        userService.save(user);
+
+        User convertedUser = userService.convert(user, filename);
+        userService.save(convertedUser);
 
         return "redirect:/users";
     }

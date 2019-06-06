@@ -1,66 +1,86 @@
 <!doctype html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<title>User Management</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	<meta charset="utf-8" />
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<head>
+        <title>User Management</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-</head>
+		<!-- CSS -->
+		
+			<link rel="stylesheet" th:href="@{/css/main.css}">
+	
+	</head>
+	<body>
+		<nav class="nav">
+			<div class="row">
+				<div class="column">
+					<div class="nav__inner">
+						<a class="logo" th:href="@{/}"><span class="track">track</span>17</a>
+						<a th:href="@{/sichtung}">Sichtungen</a>
+						<a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
+						<form sec:authorize="isAuthenticated()" th:action="@{/logout}" th:method="POST">
+							<b sec:authentication="name" class="color-white"></b>
+							<input type="submit" th:value="Logout"></button>
+						</form>
+						<a sec:authorize="hasRole('ADMIN')" th:href="@{/users}">UserManagement</a>
+						<a href="">DE <svg viewbox="0 0 8 8" class="icon"><use xlink:href="/images/open-iconic.svg#globe"></use></svg></a>
+					</div>
+				</div>
+			</div>
+		</nav>
 
-<body>
-	<div class="container">
-        <div class="row">
-            <div class="col">
-                <h1>User Dashboard</h1>
-
-                <form th:action="@{/users}" th:method="GET">
-                    <input class="form-control" type="search" th:name="search" th:placeholder="Search...">
-                    <input type="submit" th:value="Search" class="btn btn-primary">
-                </form>
-
-
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <td>Login Name</td>
-                            <td>Full Name</td>
-                            <td>Aktiv?</td>
-                            <td>Role</td>
-                            <td>Delete</td>
-                            <td>Edit</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="u: ${users}">
-                            <td th:text="${u.loginname}">Alfons123</td>
-                            <td th:text="${u.fullname}">Alfons von Quack</td>
-                            <td th:text="${u.active}">Nein</td>
-                            <td th:text="${u.role}"></td>
-                            <td>
-                                <a th:href="|@{/users/delete(user=${u.loginname})}|" class="btn btn-danger">delete user</a>
-                            </td>
-                            <td>
-                                <form th:action="@{/users/edit}">
-                                    <input type="submit" value="edit user" class="btn btn-primary">
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+		<div class="admin">
+            <div class="row">
+                <div class="column medium-8">
+                    <h1 class="h1">Manage Users</h1>
+                    <form th:action="@{/users}" th:method="GET">
+                        <div class="admin__searchWrap">
+                            <input class="input admin__search" type="search" th:name="search" th:placeholder="Search...">
+                            <input type="submit" class="button admin__searchSubmit" th:value="Search">
+                        </div>
+                    </form>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Avatar</td>
+                                <td>Login Name</td>
+                                <td>Full Name</td>
+                                <td>Active</td>
+                                <td>Role</td>
+                                <td>Delete</td>
+                                <td>Edit</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="u: ${users}">
+                                <td>
+                                    <img th:if="${u.avatar != null and #strings.length(u.avatar) > 0}" th:src="@{|/image/${u.avatar}|}">
+                                    <img th:if="${u.avatar == null or #strings.length(u.avatar) <= 0}" th:src="@{/image/default-avatar.png}">
+                                </td>
+                                <td th:text="${u.loginname}">Alfons123</td>
+                                <td th:text="${u.fullname}">Alfons von Quack</td>
+                                <td th:text="${u.active}">Nein</td>
+                                <td th:text="${u.role}">Member</td>
+                                <td>
+                                    <a th:href="|@{/users/delete(user=${u.loginname})}|"><svg viewbox="0 0 8 8" class="icon observation__icon"><use xlink:href="/images/open-iconic.svg#trash"></use></svg></a>
+                                </td>
+                                <td>
+                                    <form th:action="@{/users/edit}" th:method="POST">
+                                        <button type="submit"><svg viewbox="0 0 8 8" class="icon observation__icon"><use xlink:href="/images/open-iconic.svg#pencil"></use></svg></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column medium-1"></div>
+                <div class="column medium-3">
+                    <h3 class="h3 admin__operations">Operations</h3>
+                    <a th:href="@{/users/create}" class="admin__link">Create User</a>
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col">
-                <a th:href="@{/users/create}" class="btn btn-dark">Neuer Benutzer</a>
-            </div>
-        </div>
-
-    </div>
-</body>
+	</body>
 </html>
+

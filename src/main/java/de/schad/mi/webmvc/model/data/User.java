@@ -25,6 +25,8 @@ public class User {
 
     private String role;
 
+    private String avatar;
+
     public User() {}
 
     public User(String loginname, String password, String fullname) {
@@ -78,6 +80,14 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getAvatar() {
+        return this.avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

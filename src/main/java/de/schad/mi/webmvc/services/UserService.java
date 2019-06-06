@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 
+import de.schad.mi.webmvc.model.UserCreationForm;
 import de.schad.mi.webmvc.model.data.User;
 
 public interface UserService {
@@ -15,4 +16,5 @@ public interface UserService {
     public Optional<User> findById(String username);
     public void delete(User user);
     public void save(User user);
+    public User convert(UserCreationForm formuser, String filename);
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import de.schad.mi.webmvc.model.UserCreationForm;
 import de.schad.mi.webmvc.model.data.User;
 import de.schad.mi.webmvc.repository.UserRepository;
 
@@ -59,6 +60,16 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         logger.info("User-Password: {}", user.getPassword());
         repository.save(user);
+    }
+
+    @Override
+    public User convert(UserCreationForm formuser, String filename) {
+        User user = new User();
+        user.setLoginname(formuser.getLoginname());
+        user.setPassword(formuser.getPassword());
+        user.setFullname(formuser.getFullname());
+        user.setAvatar(filename);
+        return user;
     }
 
 
