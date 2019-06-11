@@ -33,7 +33,7 @@
 		<div class="observation_detail">
             <div class="row">
                 <div class="column">
-                    <img class="observation_detail__image" th:src="@{|/image/${observation.image}|}" alt="">
+                    <img th:if="${observation.image != null and #strings.length(observation.image) > 0}" class="observation_detail__image" th:src="@{|/image/${observation.image}|}" alt="">
                     <h1 class="h1" th:text="${observation.description}">Beschreibung</h1>
                     <p>Finder: <span th:text="${observation.finder}"></span></p>
                     <p>Location: <span th:text="${observation.location}"></span></p>
