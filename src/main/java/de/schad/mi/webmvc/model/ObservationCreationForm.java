@@ -1,11 +1,7 @@
-package de.schad.mi.webmvc.model.data;
+package de.schad.mi.webmvc.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,20 +9,14 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import de.schad.mi.webmvc.annotations.Siebzehnhaft;
 
-@Entity
-public class Observation {
-
-    @Transient
-    private String[] daytimecbs = {"morgens", "mittags", "abends"};
-    @Transient
-    private String[] ratingsbs = {"*", "**", "***", "****", "*****"};
-
-    @Id
-    @GeneratedValue
-    private long id;
+/**
+ * ObservationCreationForm
+ */
+public class ObservationCreationForm {
 
     @Size(min = 3, message = "{sichtung.form.error.name}")
     private String finder;
@@ -48,11 +38,13 @@ public class Observation {
 
     private String rating;
 
-    private String image;
+    private MultipartFile image;
 
-    public Observation() {}
 
-    public Observation(String finder, String location, LocalDate date, String[] daytime, String description, String rating, String image) {
+    public ObservationCreationForm() {
+    }
+
+    public ObservationCreationForm(String finder, String location, LocalDate date, String[] daytime, String description, String rating, MultipartFile image) {
         this.finder = finder;
         this.location = location;
         this.date = date;
@@ -60,22 +52,6 @@ public class Observation {
         this.description = description;
         this.rating = rating;
         this.image = image;
-    }
-
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String[] getDaytimecbs() {
-        return this.daytimecbs;
-    }
-
-    public String[] getRatingsbs() {
-        return this.ratingsbs;
     }
 
     public String getFinder() {
@@ -102,7 +78,6 @@ public class Observation {
         this.date = date;
     }
 
-
     public String[] getDaytime() {
         return this.daytime;
     }
@@ -127,23 +102,12 @@ public class Observation {
         this.rating = rating;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return this.image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
-    }
-
-
-    @Override
-    public String toString() {
-        return "{" +
-            " finder='" + getFinder() + "'" +
-            ", location='" + getLocation() + "'" +
-            ", date='" + getDate() + "'" +
-            ", description='" + getDescription() + "'" +
-            "}";
     }
 
 }

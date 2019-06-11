@@ -21,7 +21,7 @@
 						<a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
 						<form sec:authorize="isAuthenticated()" th:action="@{/logout}" th:method="POST">
 							<b sec:authentication="name" class="color-white"></b>
-							<input type="submit" th:value="Logout"></button>
+							<input class="button" type="submit" th:value="Logout"></button>
 						</form>
 						<a sec:authorize="hasRole('ADMIN')" th:href="@{/users}">UserManagement</a>
 						<a href="">DE <svg viewbox="0 0 8 8" class="icon"><use xlink:href="/images/open-iconic.svg#globe"></use></svg></a>
@@ -36,38 +36,22 @@
 					<h1 class="h1">Aktuelle Sichtungen</h1>
 				</div>
 			</div>
-			<div class="row">
-				<div class="column">
 
-					<table th:if="${#lists.size(sichtungen)} > 0">
-						<thead>
-							<tr>
-								<td th:text="#{sichtung.table.number}">Nr.</td>
-								<td th:text="#{sichtung.table.date}">Datum</td>
-								<td th:text="#{sichtung.table.daytime}">Tageszeit</td>
-								<td th:text="#{sichtung.table.location}">Fundort</td>
-								<td th:text="#{sichtung.table.name}">Finder</td>
-								<td th:text="#{sichtung.table.description}">Beschreibung</td>
-								<td th:text="#{sichtung.table.rating}">Rating</td>
-								<td th:text="#{sichtung.table.edit}">[edit]</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="s, iter: ${sichtungen}">
-								<td th:text="${iter.index}">1</td>
-								<td th:text="${s.date}">01.01.2019</td>
-								<td><span th:each="dt: ${s.daytime}" th:text="${dt}" style="margin-right: 6px;"></span></td>
-								<td th:text="${s.location}">Unter den Eichen</td>
-								<td th:text="${s.finder}">Peter</td>
-								<td th:text="${s.description}">Herr Weitz schießt 17 Feuerwerkskörper in die Luft</td>
-								<td th:text="${s.rating}">*</td>
-								<td><a th:href="@{'/sichtung/' + ${s.id}}"><svg viewbox="0 0 8 8" class="icon observation__icon"><use xlink:href="/images/open-iconic.svg#pencil"></use></svg></a></td>
-							</tr>
-						</tbody>
-					</table>
+			<div th:each="s, iter: ${sichtungen}" class="observation_teaser">
+				<div class="row">
+					<div class="column">
+						<div class="observation_teaser__flex">
+							<div th:if="${s.image != null and #strings.length(s.image) > 0}" class="observation_teaser__image" th:style="|background-image: url(@{|/image/${s.image}|});|"></div>
+							<div class="observation_teaser__wrap">
+								<h3 class="h3" th:text="${s.description}">Beschreibung</h3>
+								<div class="observation_teaser__meta"><span th:text="${s.date}">23.10.1991</span> - <span th:text="${s.finder}">freedeebee</span></div>
+								<a th:href="@{|/sichtung/${s.id}|}" class="link">Read more</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-
+			
 			<div class="observation__background">
 				<div class="observation__bgbox">
 					<h2>Haben Sie eine 17 gesichtet?</h2>
@@ -78,7 +62,7 @@
 			<div sec:authorize="hasRole('MEMBER') or hasRole('ADMIN')" class="row">
 				<div class="column">
 
-					<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}">
+					<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}" enctype="multipart/form-data">
 						<div class="observation__formElem">
 							<input class="input observation__input" type="text" id="finder" th:field="*{finder}" th:errorclass="alert-danger" th:placeholder="#{sichtung.form.name}">
 							<span class="observation__errormessage" th:if="${#fields.hasErrors('finder')}" th:errors="*{finder}">Finder zu kurz</span>
@@ -113,6 +97,9 @@
 							<input class="input observation__input" type="text" id="description" th:field="*{description}" th:errorclass="alert-danger" th:placeholder="#{sichtung.form.description}">
 							<span class="observation__errormessage" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Darf nicht leer oder länger als 80 Zeichen sein</span>
 						</div>
+
+						<label for="avatar">Image</label>
+						<input class="input createuser__input createuser__input--file" type="file" id="image" name="image" placeholder="Bild">
 
 						<input class="button" type="submit" th:value="#{sichtung.form.submit}">
 
