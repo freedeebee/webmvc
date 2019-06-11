@@ -36,6 +36,9 @@ public class ObservationController {
 	private final ObservationService observationService;
 	private final Logger logger = LoggerFactory.getLogger(ObservationController.class);
 
+    private String[] daytimecbs = {"morgens", "mittags", "abends"};
+    private String[] ratingsbs = {"*", "**", "***", "****", "*****"};
+
 
 	@Autowired
 	public ObservationController(ObservationService observationService, ImageService imageService) {
@@ -46,7 +49,9 @@ public class ObservationController {
 
 	@GetMapping("/sichtung")
 	public String getForm(Model m) {
-		m.addAttribute("sichtungform", new Observation());
+		m.addAttribute("sichtungform", new ObservationCreationForm());
+		m.addAttribute("daytimevals", daytimecbs);
+		m.addAttribute("ratingvals", ratingsbs);
 		m.addAttribute("sichtungen", observationService.findAll());
 		return "sichtung";
 	}
@@ -57,10 +62,11 @@ public class ObservationController {
 		Optional<Observation> found = observationService.findById(id);
 
 		if(found.isPresent()) {
+			m.addAttribute("observation", found.get());
 			return "observationdetail";
 		} else {
 			logger.info("Sichtung not found");
-			m.addAttribute("sichtungform", new Observation());
+			m.addAttribute("sichtungform", new ObservationCreationForm());
 			m.addAttribute("sichtungen", observationService.findAll());
 			return "sichtung";
 		}
@@ -97,7 +103,9 @@ public class ObservationController {
 		observationService.save(observationService.convert(sichtung));
 
 		// Clear form
-		m.addAttribute("sichtungform", new Observation());
+		m.addAttribute("sichtungform", new ObservationCreationForm());
+		m.addAttribute("daytimevals", daytimecbs);
+		m.addAttribute("ratingvals", ratingsbs);
 		m.addAttribute("sichtungen", observationService.findAll());
 		return "sichtung";
 	}

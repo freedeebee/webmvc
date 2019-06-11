@@ -5,45 +5,25 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import de.schad.mi.webmvc.annotations.Siebzehnhaft;
-
 @Entity
 public class Observation {
-
-    @Transient
-    private String[] daytimecbs = {"morgens", "mittags", "abends"};
-    @Transient
-    private String[] ratingsbs = {"*", "**", "***", "****", "*****"};
 
     @Id
     @GeneratedValue
     private long id;
 
-    @Size(min = 3, message = "{sichtung.form.error.name}")
     private String finder;
 
-    @NotBlank(message = "{sichtung.form.error.location}")
     private String location;
 
-    @PastOrPresent(message = "{sichtung.form.error.date.future}")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "{sichtung.form.error.date.notnull}")
     private LocalDate date;
 
-    @NotEmpty(message = "{sichtung.form.error.daytime}")
     private String[] daytime;
 
-    @Size(min = 1, max = 80, message = "{sichtung.form.error.description.size}")
-    @Siebzehnhaft(message = "{sichtung.form.error.description.siebzehn}")
     private String description;
 
     private String rating;
@@ -68,14 +48,6 @@ public class Observation {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String[] getDaytimecbs() {
-        return this.daytimecbs;
-    }
-
-    public String[] getRatingsbs() {
-        return this.ratingsbs;
     }
 
     public String getFinder() {

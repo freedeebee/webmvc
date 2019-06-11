@@ -79,7 +79,7 @@
 						</div>
 
 						<div class="observation__formElem">
-							<div class="form-check" th:each="cb: *{daytimecbs}">
+							<div class="form-check" th:each="cb: ${daytimevals}">
 								<input class="control__input" type="checkbox" th:field="*{daytime}" th:value="${cb}" th:errorclass="alert-danger">
 								<label class="control__label" th:for="${#ids.prev('daytime')}" th:text="${cb}">morgens</label>
 							</div>
@@ -89,7 +89,7 @@
 						<div class="observation__formElem">
 							<label for="rating" th:text="#{sichtung.form.rating}">Rating</label>
 							<select class="select" id="rating" th:field="*{rating}" th:errorclass="alert-danger">
-								<option th:each="sb: *{ratingsbs}" th:text="${sb}" th:value="${sb}"></option>
+								<option th:each="sb: ${ratingvals}" th:text="${sb}" th:value="${sb}"></option>
 							</select>
 						</div>
 

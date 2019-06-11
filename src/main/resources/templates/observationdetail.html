@@ -1,1 +1,48 @@
-<h1>hey</h1>
+<!doctype html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- CSS -->
+
+			<link rel="stylesheet" th:href="@{/css/main.css}">
+
+	</head>
+	<body>
+
+		<nav class="nav">
+			<div class="row">
+				<div class="column">
+					<div class="nav__inner">
+						<a class="logo" th:href="@{/}"><span class="track">track</span>17</a>
+						<a th:href="@{/sichtung}">Sichtungen</a>
+						<a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
+						<form sec:authorize="isAuthenticated()" th:action="@{/logout}" th:method="POST">
+							<b sec:authentication="name" class="color-white"></b>
+							<input class="button" type="submit" th:value="Logout"></button>
+						</form>
+						<a sec:authorize="hasRole('ADMIN')" th:href="@{/users}">UserManagement</a>
+						<a href="">DE <svg viewbox="0 0 8 8" class="icon"><use xlink:href="/images/open-iconic.svg#globe"></use></svg></a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="observation_detail">
+            <div class="row">
+                <div class="column">
+                    <img class="observation_detail__image" th:src="@{|/image/${observation.image}|}" alt="">
+                    <h1 class="h1" th:text="${observation.description}">Beschreibung</h1>
+                    <p>Finder: <span th:text="${observation.finder}"></span></p>
+                    <p>Location: <span th:text="${observation.location}"></span></p>
+                    <p>Date: <span th:text="${observation.date}"></span></p>
+                    <p>Daytime: <span th:each="dt: ${observation.daytime}" th:text="${dt}"></span></p>
+                    <p>rating: <span th:text="${observation.rating}"></span></p>
+                </div>
+            </div>
+        </div>
+
+	</body>
+</html>
