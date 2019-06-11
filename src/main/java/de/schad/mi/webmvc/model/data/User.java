@@ -1,31 +1,33 @@
 package de.schad.mi.webmvc.model.data;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "USERS")
 public class User {
 
     @Id
-    @Size(min = 3, message = "Minimum 3 Characters")
     @Column(unique = true)
     private String loginname;
 
-    @NotBlank(message = "This field may not be empty")
     private String password;
 
-    @NotBlank(message = "This field may not be empty")
     private String fullname;
     private boolean active;
 
     private String role;
 
     private String avatar;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Comment> comments;
 
     public User() {}
 
