@@ -37,14 +37,14 @@
 				<div class="column large-6 background-white">
 					<div class="login__wrapper">
 						<h1 class="h1">Login</h1>
-						<p>Noch keinen Account? <a href=""><span class="login__register">Jetzt Registrieren</span></a></p>
+						<p>Noch keinen Account? <a th:href="@{/users/create}"><span class="login__register">Jetzt Registrieren</span></a></p>
 						<form th:action="@{/login}" th:method="POST">
 							<input class="input login__input" type="text" name="username" placeholder="Username">
 							<input class="input login__input" type="password" name="password" placeholder="Password">
 							<input class="login__button" type="submit" value="LOG IN">
 						</form>
 						<p>- oder -</p>
-						<a href="" class="login__button login__button--yellow">REGISTRIEREN</a>
+						<a href="@{/users/create}" class="login__button login__button--yellow">REGISTRIEREN</a>
 					</div>
 
 				</div>
