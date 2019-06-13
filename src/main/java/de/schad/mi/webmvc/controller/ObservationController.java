@@ -75,13 +75,14 @@ public class ObservationController {
 
 	@PostMapping("/sichtung")
 	public String getFormInput(
-		@Valid @ModelAttribute("sichtungform") ObservationCreationForm sichtung,
+		@Valid @ModelAttribute("sichtungform") ObservationCreationForm sichtung, BindingResult result,
 		@RequestParam("image") MultipartFile file,
-		BindingResult result,
 		Model m) {
 
 		if(result.hasErrors()) {
-			logger.info("Result Binding has errors or form validation has detected Errors");
+			//logger.info("Result Binding has errors or form validation has detected Errors");
+			m.addAttribute("daytimevals", daytimecbs);
+			m.addAttribute("ratingvals", ratingsbs);
 			return "sichtung";
 		}
 

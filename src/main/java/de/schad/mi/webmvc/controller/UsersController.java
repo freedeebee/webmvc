@@ -61,8 +61,8 @@ public class UsersController {
     @PostMapping("/create")
     public String newUser(
             @Valid @ModelAttribute("userform") UserCreationForm user,
-            @RequestParam("avatar") MultipartFile file,
             BindingResult result,
+            @RequestParam("avatar") MultipartFile file,
             Model m) {
 
         if(result.hasErrors()) {

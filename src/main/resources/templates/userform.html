@@ -42,12 +42,12 @@
 
 						<div class="createuser__wrap">
 							<input class="input createuser__input" type="password" th:field="*{password}" placeholder="Password">
-							<span class="createuser__error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Finder zu kurz</span>						
+							<span class="createuser__error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password nicht ausgefüllt</span>						
 						</div>
 
 						<div class="createuser__wrap">
 							<input class="input createuser__input" type="text" th:field="*{fullname}" placeholder="Full Name">
-							<span class="createuser__error" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}">Finder zu kurz</span>						
+							<span class="createuser__error" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}">Fullname nicht ausgefüllt</span>						
 						</div>
 
 						<label for="avatar">Avatar</label>
