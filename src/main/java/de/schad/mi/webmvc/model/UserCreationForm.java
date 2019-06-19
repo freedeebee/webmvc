@@ -1,7 +1,6 @@
 package de.schad.mi.webmvc.model;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.web.multipart.MultipartFile;
 
