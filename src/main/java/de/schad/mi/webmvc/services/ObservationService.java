@@ -13,5 +13,5 @@ public interface ObservationService {
     public void save(Observation observation);
     public void override(long ID, Observation observation);
     public void delete(Observation observation);
-    public Observation convert(ObservationCreationForm observation);
+    public Observation convert(ObservationCreationForm observation, String filename);
 }

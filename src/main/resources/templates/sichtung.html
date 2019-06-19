@@ -91,6 +91,7 @@
 							<select class="select" id="rating" th:field="*{rating}" th:errorclass="alert-danger">
 								<option th:each="sb: ${ratingvals}" th:text="${sb}" th:value="${sb}"></option>
 							</select>
+							<span class="observation__errormessage" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}">Es muss eine Bewertung abgegeben werden</span>
 						</div>
 
 						<div class="observation__formElem">
@@ -112,7 +113,7 @@
 				<div class="column">
 					<h2 class="h2">Noch kein Mitglied?</h2>
 					<p>Sichtungen können nur von Mitgliedern eingetragen werden. Registrieren Sie sich jetzt kostenfrei.</p>
-					<a href="" class="button">REGISTRIEREN</a>
+					<a href="/users/create" class="button">REGISTRIEREN</a>
 				</div>
 			</div>
 		</div>

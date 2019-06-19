@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
@@ -77,18 +78,28 @@ public class ObservationController {
 
 	@PostMapping("/sichtung")
 	public String getFormInput(
-		@Valid @ModelAttribute("sichtungform") ObservationCreationForm sichtung,
+		@Valid @ModelAttribute("sichtungform") ObservationCreationForm sichtung, BindingResult result,
 		@RequestParam("image") MultipartFile file,
-		BindingResult result,
 		Model m) {
 
 		if(result.hasErrors()) {
-			logger.info("Result Binding has errors or form validation has detected Errors");
+			//logger.info("Result Binding has errors or form validation has detected Errors");
+			m.addAttribute("daytimevals", daytimecbs);
+			m.addAttribute("ratingvals", ratingsbs);
 			return "sichtung";
 		}
 
+		String filename = "";
+
 		if(!file.isEmpty()) {
-            String filename = file.getOriginalFilename();
+			filename = file.getOriginalFilename().trim() + LocalDateTime.now().toString();
+
+			// Replace special characters
+			filename = filename.replace(".", "");
+			filename = filename.replace(":", "");
+
+			// Append file format
+			filename = filename + "." + file.getOriginalFilename().split("\\.")[1];
 
             String status = "";
             try {
@@ -96,13 +107,13 @@ public class ObservationController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-    
+
             if (status.equals("ok")) {
                 sichtung.setImage(file);
             }
         }
 
-		observationService.save(observationService.convert(sichtung));
+		observationService.save(observationService.convert(sichtung, filename));
 
 		// Clear form
 		m.addAttribute("sichtungform", new ObservationCreationForm());

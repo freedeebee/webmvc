@@ -1,14 +1,18 @@
 package de.schad.mi.webmvc.model;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * UserCreationForm
  */
 public class UserCreationForm {
-
+    @NotBlank(message = "{user.creation.error.loginname}")
     private String loginname;
+    @NotBlank(message = "{user.creation.error.password}")
     private String password;
+    @NotBlank(message = "{user.creation.error.fullname}")
     private String fullname;
     private MultipartFile avatar;
 
