@@ -118,4 +118,13 @@ public class Observation {
             "}";
     }
 
+    public void setObservation(Observation observation){
+        setImage(observation.getImage());
+        setRating(observation.getRating());
+        setDescription(observation.getDescription());
+        setDaytime(observation.getDaytime());
+        setLocation(observation.getLocation());
+        setFinder(observation.getFinder());
+    }
+
 }
