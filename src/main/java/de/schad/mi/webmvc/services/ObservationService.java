@@ -11,6 +11,7 @@ public interface ObservationService {
     public List<Observation> findAll();
     public Optional<Observation> findById(long id);
     public void save(Observation observation);
+    public void override(long ID, Observation observation);
     public void delete(Observation observation);
     public Observation convert(ObservationCreationForm observation, String filename);
 }

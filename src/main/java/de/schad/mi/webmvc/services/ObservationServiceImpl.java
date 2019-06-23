@@ -54,4 +54,10 @@ public class ObservationServiceImpl implements ObservationService {
         return cObservation;
     }
 
+    public void override(long id, Observation observation) {
+        Optional<Observation> result = repository.findById(id);
+        result.get().setObservation(observation);
+        repository.flush();
+    }
+    
 }
