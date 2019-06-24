@@ -1,5 +1,9 @@
 package de.schad.mi.webmvc.model.data;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -10,6 +14,10 @@ import javax.persistence.*;
 /**
  * Comment
  */
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 @Entity
 public class Comment {
 
@@ -27,7 +35,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "observation_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIdentityReference(alwaysAsId = true)
     private Observation observation;
 
     public Comment() {}

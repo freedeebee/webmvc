@@ -1,11 +1,11 @@
 package de.schad.mi.webmvc.model.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Observation {
@@ -28,6 +28,10 @@ public class Observation {
     private String rating;
 
     private String image;
+
+    @OneToMany(mappedBy = "observation", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("observation")
+    private List<Comment> comments;
 
     public Observation() {
     }
@@ -105,6 +109,14 @@ public class Observation {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

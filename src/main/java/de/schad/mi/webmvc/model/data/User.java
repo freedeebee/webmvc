@@ -26,9 +26,6 @@ public class User {
 
     private String avatar;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Comment> comments;
-
     public User() {}
 
     public User(String loginname, String password, String fullname) {

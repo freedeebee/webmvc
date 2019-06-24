@@ -5,7 +5,6 @@ import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.model.data.User;
 import de.schad.mi.webmvc.repository.CommentRepository;
 import de.schad.mi.webmvc.repository.UserRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,5 +43,14 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> findAllByObservationOrderByCreatedAtAsc(Observation observation) {
         return commentRepository.findAllByObservationOrderByCreatedAtAsc(observation);
+    }
+
+    @Override
+    public List<Comment> findAllByObservation(Observation observation) {
+        return commentRepository.findAllByObservation(observation);
+    }
+
+    public Optional<Comment> findById(long id) {
+        return commentRepository.findById(id);
     }
 }

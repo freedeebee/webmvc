@@ -9,4 +9,5 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByObservationOrderByCreatedAtAsc(Observation observation);
+    List<Comment> findAllByObservation(Observation observation);
 }
