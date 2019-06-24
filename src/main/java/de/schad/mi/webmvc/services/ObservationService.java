@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import de.schad.mi.webmvc.model.ObservationCreationForm;
+import de.schad.mi.webmvc.model.data.Comment;
 import de.schad.mi.webmvc.model.data.Observation;
 
 public interface ObservationService {
 
-    public List<Observation> findAll();
-    public Optional<Observation> findById(long id);
-    public void save(Observation observation);
-    public void override(long ID, Observation observation);
-    public void delete(Observation observation);
-    public Observation convert(ObservationCreationForm observation, String filename);
+    List<Observation> findAll();
+    Optional<Observation> findById(long id);
+    void save(Observation observation);
+    void delete(Observation observation);
+    Observation convert(ObservationCreationForm observation, String filename);
 }

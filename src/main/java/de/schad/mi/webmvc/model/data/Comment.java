@@ -1,14 +1,11 @@
 package de.schad.mi.webmvc.model.data;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 
 /**
  * Comment
@@ -20,55 +17,79 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String comment;
     private LocalDate createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String comment;
+
+    private String loginName;
+    private String fullName;
+    private String avatar;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "observation_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Observation observation;
 
     public Comment() {}
 
-    public Comment(String comment, User user) {
-        this.comment = comment;
-        this.user = user;
-    }
-
     @PrePersist
-    public void setCreationDate() {
+    public void prePersistCreatedAt() {
         this.createdAt = LocalDate.now();
     }
 
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getComment() {
-        return this.comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public LocalDate getCreatedAt() {
-        return this.createdAt;
+        return createdAt;
     }
 
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public User getUser() {
-        return this.user;
+    public String getComment() {
+        return comment;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Observation getObservation() {
+        return observation;
+    }
+
+    public void setObservation(Observation observation) {
+        this.observation = observation;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }

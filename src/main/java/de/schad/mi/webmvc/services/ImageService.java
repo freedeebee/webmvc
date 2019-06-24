@@ -4,5 +4,5 @@ import java.io.InputStream;
 
 public interface ImageService {
 
-    public String store(InputStream input, String filename);
+    String store(InputStream input, String filename);
 }

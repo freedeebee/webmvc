@@ -1,13 +1,12 @@
 package de.schad.mi.webmvc.controller;
 
-import javax.validation.Valid;
-
 import de.schad.mi.webmvc.exceptions.SichtungNotFoundException;
+import de.schad.mi.webmvc.model.CommentForm;
 import de.schad.mi.webmvc.model.ObservationCreationForm;
 import de.schad.mi.webmvc.model.data.Observation;
+import de.schad.mi.webmvc.services.CommentService;
 import de.schad.mi.webmvc.services.ImageService;
 import de.schad.mi.webmvc.services.ObservationService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,28 +14,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
-@SessionAttributes(names = {"sichtungen"})
 public class ObservationController {
 
 	private final ImageService imageService;
 	private final ObservationService observationService;
+	private final CommentService commentService;
 	private final Logger logger = LoggerFactory.getLogger(ObservationController.class);
 
     private String[] daytimecbs = {"morgens", "mittags", "abends"};
@@ -44,9 +36,10 @@ public class ObservationController {
 
 
 	@Autowired
-	public ObservationController(ObservationService observationService, ImageService imageService) {
+	public ObservationController(ObservationService observationService, ImageService imageService, CommentService commentService) {
 		this.observationService = observationService;
 		this.imageService = imageService;
+		this.commentService = commentService;
 	}
 
 
@@ -60,20 +53,51 @@ public class ObservationController {
 	}
 
 	@GetMapping("/sichtung/{id}")
-	public String alterSichtung(@PathVariable long id, Model m) {
+	public String showObservationDetail(@PathVariable long id, Model m) {
 
 		Optional<Observation> found = observationService.findById(id);
 
 		if(found.isPresent()) {
+			m.addAttribute("comments", commentService.findAllByObservationOrderByCreatedAtAsc(found.get()));
 			m.addAttribute("observation", found.get());
+			m.addAttribute("commentform", new CommentForm());
 			return "observationdetail";
 		} else {
-			logger.info("Sichtung not found");
-			m.addAttribute("sichtungform", new ObservationCreationForm());
-			m.addAttribute("sichtungen", observationService.findAll());
-			return "sichtung";
+			return "error";
 		}
 
+	}
+
+	@PostMapping("/sichtung/{id}/comment")
+	public String postComment(
+			@PathVariable long id,
+			@Valid @ModelAttribute("commentform") CommentForm commentForm,
+			BindingResult result,
+			Model m,
+			Principal principal) {
+
+		if(result.hasErrors()) {
+			return "observationdetail";
+		}
+
+		Optional<Observation> found = observationService.findById(id);
+
+
+		if(found.isPresent()) {
+			Observation observation = found.get();
+
+			String comment = commentForm.getComment();
+
+			commentService.addComment(comment, principal.getName(), observation);
+
+			m.addAttribute("comments", commentService.findAllByObservationOrderByCreatedAtAsc(observation));
+			m.addAttribute("observation", found.get());
+			m.addAttribute("commentform", new CommentForm());
+
+			return "observationdetail";
+		}
+
+		return "observationdetail";
 	}
 
 	@PostMapping("/sichtung")
@@ -83,7 +107,6 @@ public class ObservationController {
 		Model m) {
 
 		if(result.hasErrors()) {
-			//logger.info("Result Binding has errors or form validation has detected Errors");
 			m.addAttribute("daytimevals", daytimecbs);
 			m.addAttribute("ratingvals", ratingsbs);
 			return "sichtung";

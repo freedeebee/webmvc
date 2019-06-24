@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<html lang="de" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 
 		<meta charset="utf-8">
@@ -46,13 +46,32 @@
 
 		<div class="row">
 			<div class="column">
-				<form action="" th:method="POST">
-					<input type="text" class="input" placeholder="Kommentar...">
+				<h2 class="h2">Kommentare</h2>
+
+				<div class="comment" th:each="c: ${comments}">
+					<img th:if="${c.avatar != null and #strings.length(c.avatar) > 0}" th:src="@{|/image/${c.avatar}|}" alt="" class="comment__image">
+					<img th:if="${c.avatar == null or #strings.length(c.avatar) <= 0}" th:src="@{/image/default-avatar.png}" class="comment__image">
+					<div class="comment__commentWrap">
+						<span class="comment__username" th:text="${c.loginName}">freedeebee</span>
+						<span class="comment__date" th:text="${c.createdAt}">23.10.2019</span>
+						<p class="comment__comment" th:text="${c.comment}"></p>
+					</div>
+					<div class="comment__edit" th:if="${#authentication.name} == ${c.loginName}">
+						<svg viewbox="0 0 8 8" class="icon observation__icon"><use xlink:href="/images/open-iconic.svg#trash"></use></svg>
+					</div>
+				</div>
+				<div class="spacing-medium"></div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="column">
+				<form th:action="@{__${#httpServletRequest.requestURI}__/comment}" th:method="POST" th:object="${commentform}">
+					<input type="text" class="input" placeholder="Kommentar..." th:field="*{comment}">
 					<input type="submit" class="button" value="Kommentieren">
 				</form>
 			</div>
 		</div>
-
 
 	</body>
 </html>

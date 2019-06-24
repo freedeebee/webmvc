@@ -1,8 +1,10 @@
 package de.schad.mi.webmvc.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import de.schad.mi.webmvc.model.data.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +55,4 @@ public class ObservationServiceImpl implements ObservationService {
 
         return cObservation;
     }
-
-    public void override(long id, Observation observation) {
-        Optional<Observation> result = repository.findById(id);
-        result.get().setObservation(observation);
-        repository.flush();
-    }
-    
 }

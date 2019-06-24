@@ -1,10 +1,13 @@
 package de.schad.mi.webmvc.model;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * CommentForm
  */
 public class CommentForm {
 
+	@NotBlank
 	private String comment;
 
 	public CommentForm() {}
