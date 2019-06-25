@@ -68,6 +68,22 @@ public class ObservationController {
 
 	}
 
+	@GetMapping("/sichtung/{id}/edit")
+	public String editObservation(@PathVariable long id, Model m){
+
+		Optional<Observation> found = observationService.findById(id);
+		//Simple Edit -> Everyone can edit
+		if(found.isPresent()){
+			m.addAttribute("sichtungform", observationService.convertBack(found.get()));
+			m.addAttribute("daytimevals", daytimecbs);
+			m.addAttribute("ratingvals", ratingsbs);
+			observationService.delete(found.get());
+			return "sichtung";
+		}else{
+			return "error";
+		}
+	}
+
 	@PostMapping("/sichtung/{id}/comment")
 	public String postComment(
 			@PathVariable long id,

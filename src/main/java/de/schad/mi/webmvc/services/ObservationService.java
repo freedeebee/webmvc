@@ -14,4 +14,5 @@ public interface ObservationService {
     void save(Observation observation);
     void delete(Observation observation);
     Observation convert(ObservationCreationForm observation, String filename);
+    ObservationCreationForm convertBack(Observation observation);
 }

@@ -55,4 +55,18 @@ public class ObservationServiceImpl implements ObservationService {
 
         return cObservation;
     }
+
+    @Override
+    public ObservationCreationForm convertBack(Observation observation) {
+        ObservationCreationForm formObservation = new ObservationCreationForm();
+        formObservation.setFinder(observation.getFinder());
+        formObservation.setDescription(observation.getDescription());
+        formObservation.setRating(observation.getRating());
+        formObservation.setLocation(observation.getLocation());
+        formObservation.setDate(observation.getDate());
+        formObservation.setDaytime(observation.getDaytime());
+        return formObservation;
+    }
+
+    
 }

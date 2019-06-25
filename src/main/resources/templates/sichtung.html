@@ -46,6 +46,7 @@
 								<h3 class="h3" th:text="${s.description}">Beschreibung</h3>
 								<div class="observation_teaser__meta"><span th:text="${s.date}">23.10.1991</span> - <span th:text="${s.finder}">freedeebee</span></div>
 								<a th:href="@{|/sichtung/${s.id}|}" class="link">Read more</a>
+								<a th:href="@{|/sichtung/${s.id}/edit|}" class="link">Edit</a>
 							</div>
 						</div>
 					</div>
