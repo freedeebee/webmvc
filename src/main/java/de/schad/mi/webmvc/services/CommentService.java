@@ -12,4 +12,5 @@ public interface CommentService {
     List<Comment> findAllByObservationOrderByCreatedAtAsc(Observation observation);
     List<Comment> findAllByObservation(Observation observation);
     Optional<Comment> findById(long id);
+    void save(Comment comment);
 }
