@@ -60,6 +60,8 @@ public class ObservationRestController {
 
     @PutMapping(value = "/sichtungen/{id}")
     public Observation put(@PathVariable long id, @RequestBody Observation observation) {
+        observationService.findById(id)
+            .orElseThrow( () -> new SichtungNotFoundException("Observation not Found"));
         observationService.override(id, observation);
         return observation;
     }
