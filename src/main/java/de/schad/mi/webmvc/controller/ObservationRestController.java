@@ -5,8 +5,6 @@ import de.schad.mi.webmvc.model.data.Comment;
 import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.services.CommentService;
 import de.schad.mi.webmvc.services.ObservationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +20,6 @@ public class ObservationRestController {
 
     private final ObservationService observationService;
     private final CommentService commentService;
-
-    private final Logger logger = LoggerFactory.getLogger(ObservationRestController.class);
 
     public ObservationRestController(ObservationService observationService, CommentService commentService) {
         this.observationService = observationService;

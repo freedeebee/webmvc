@@ -7,8 +7,6 @@ import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.services.CommentService;
 import de.schad.mi.webmvc.services.ImageService;
 import de.schad.mi.webmvc.services.ObservationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -29,7 +27,6 @@ public class ObservationController {
 	private final ImageService imageService;
 	private final ObservationService observationService;
 	private final CommentService commentService;
-	private final Logger logger = LoggerFactory.getLogger(ObservationController.class);
 
     private String[] daytimecbs = {"morgens", "mittags", "abends"};
     private String[] ratingsbs = {"*", "**", "***", "****", "*****"};

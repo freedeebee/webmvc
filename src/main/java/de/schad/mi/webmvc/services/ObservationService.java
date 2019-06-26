@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import de.schad.mi.webmvc.model.ObservationCreationForm;
-import de.schad.mi.webmvc.model.data.Comment;
 import de.schad.mi.webmvc.model.data.Observation;
 
 public interface ObservationService {
