@@ -66,5 +66,18 @@ public class ObservationServiceImpl implements ObservationService {
         return formObservation;
     }
 
+    @Override
+    public void override(long id, Observation observation) {
+        Optional<Observation> tempObservation = repository.findById(id);
+        tempObservation.get().setComments(observation.getComments());
+        tempObservation.get().setDate(observation.getDate());
+        tempObservation.get().setDaytime(observation.getDaytime());
+        tempObservation.get().setDescription(observation.getDescription());
+        tempObservation.get().setFinder(observation.getFinder());
+        tempObservation.get().setImage(observation.getImage());
+        tempObservation.get().setLocation(observation.getLocation());
+        tempObservation.get().setRating(observation.getRating());
+    }
+
 
 }
