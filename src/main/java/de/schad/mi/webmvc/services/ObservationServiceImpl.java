@@ -77,6 +77,7 @@ public class ObservationServiceImpl implements ObservationService {
         tempObservation.get().setImage(observation.getImage());
         tempObservation.get().setLocation(observation.getLocation());
         tempObservation.get().setRating(observation.getRating());
+        repository.flush();
     }
 
 
