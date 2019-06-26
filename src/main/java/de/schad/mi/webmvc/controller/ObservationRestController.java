@@ -5,15 +5,19 @@ import de.schad.mi.webmvc.model.data.Comment;
 import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.services.CommentService;
 import de.schad.mi.webmvc.services.ObservationService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest")
@@ -44,7 +48,28 @@ public class ObservationRestController {
 
     @GetMapping("/sichtungen/{id}")
     public Observation getObservationById(@PathVariable long id) {
-        return observationService.findById(id).orElseThrow(() -> new SichtungNotFoundException("Observation not found"));
+        return observationService.findById(id)
+                .orElseThrow(() -> new SichtungNotFoundException("Observation not found"));
+    }
+
+    @PostMapping(value = "/{id}")
+    public Observation post(@PathVariable long id, @RequestBody Observation observation) {
+        observation.setId(id);
+        observationService.save(observation);
+        return observation;
+    }
+
+    @PutMapping(value = "/{id}")
+    public Observation put(@PathVariable long id, @RequestBody Observation observation) {
+        observationService.override(id, observation);
+        return observation;
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable long id) {
+
+        Optional<Observation> found = observationService.findById(id);
+        observationService.delete(found.get());
     }
 
     @GetMapping("/sichtungen/{id}/kommentare")
