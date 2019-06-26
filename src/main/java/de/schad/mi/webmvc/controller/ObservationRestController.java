@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,8 +28,18 @@ public class ObservationRestController {
     }
 
     @GetMapping("/sichtungen")
-    public List<Observation> getAllObservations() {
-        return observationService.findAll();
+    public List<String> getAllObservations() {
+        List<Observation> observations = observationService.findAll();
+
+        List<String> urls = new ArrayList<>();
+
+        for(Observation observation: observations) {
+            long id = observation.getId();
+            String url = String.format("/rest/sichtungen/%s", id);
+            urls.add(url);
+        }
+
+        return urls;
     }
 
     @GetMapping("/sichtungen/{id}")
