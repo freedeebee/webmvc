@@ -33,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
             comment.setComment(commentText);
             comment.setLoginName(user.getLoginname());
             comment.setFullName(user.getFullname());
-            comment.setObservation(observation);
+            //comment.setObservation(observation);
             comment.setAvatar(user.getAvatar());
             commentRepository.save(comment);
         }

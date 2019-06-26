@@ -52,20 +52,19 @@ public class ObservationRestController {
                 .orElseThrow(() -> new SichtungNotFoundException("Observation not found"));
     }
 
-    @PostMapping(value = "/{id}")
-    public Observation post(@PathVariable long id, @RequestBody Observation observation) {
-        observation.setId(id);
+    @PostMapping(value = "/sichtungen")
+    public Observation post(@RequestBody Observation observation) {
         observationService.save(observation);
         return observation;
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/sichtungen/{id}")
     public Observation put(@PathVariable long id, @RequestBody Observation observation) {
         observationService.override(id, observation);
         return observation;
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/sichtungen/{id}")
     public void delete(@PathVariable long id) {
 
         Optional<Observation> found = observationService.findById(id);

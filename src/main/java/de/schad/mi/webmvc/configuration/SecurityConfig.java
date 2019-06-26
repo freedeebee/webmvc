@@ -53,7 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .logoutSuccessUrl("/")
             .permitAll()
         .and()
-            .csrf().ignoringAntMatchers("/h2-console/**")
+            .httpBasic()
+            .realmName("ObservationService")
+        .and()
+            .csrf().ignoringAntMatchers("/h2-console/**", "/rest/**")
         .and()
             .headers().frameOptions().sameOrigin();
     }
