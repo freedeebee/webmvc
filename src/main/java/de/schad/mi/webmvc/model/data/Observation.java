@@ -29,7 +29,7 @@ public class Observation {
 
     private String image;
 
-    @OneToMany(mappedBy = "observation", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("observation")
     private List<Comment> comments;
 

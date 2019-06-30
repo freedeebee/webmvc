@@ -1,12 +1,10 @@
 package de.schad.mi.webmvc.model.data;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import java.time.LocalDate;
-
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * Comment
@@ -29,11 +27,6 @@ public class Comment {
     private String loginName;
     private String fullName;
     private String avatar;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "observation_id", nullable = false)
-    @JsonIdentityReference(alwaysAsId = true)
-    private Observation observation;
 
     public Comment() {}
 
@@ -80,14 +73,6 @@ public class Comment {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public Observation getObservation() {
-        return observation;
-    }
-
-    public void setObservation(Observation observation) {
-        this.observation = observation;
     }
 
     public String getAvatar() {

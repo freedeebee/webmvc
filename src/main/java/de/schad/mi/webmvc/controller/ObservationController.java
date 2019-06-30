@@ -52,16 +52,15 @@ public class ObservationController {
 	@GetMapping("/sichtung/{id}")
 	public String showObservationDetail(@PathVariable long id, Model m) {
 
-		Optional<Observation> found = observationService.findById(id);
+		Observation found = observationService.findById(id).orElseThrow(
+				() -> new SichtungNotFoundException("Sichtung not found")
+		);
 
-		if(found.isPresent()) {
-			m.addAttribute("comments", commentService.findAllByObservationOrderByCreatedAtAsc(found.get()));
-			m.addAttribute("observation", found.get());
-			m.addAttribute("commentform", new CommentForm());
-			return "observationdetail";
-		} else {
-			return "error";
-		}
+		m.addAttribute("comments", found.getComments());
+		m.addAttribute("observation", found);
+		m.addAttribute("commentform", new CommentForm());
+		return "observationdetail";
+
 
 	}
 
@@ -81,7 +80,7 @@ public class ObservationController {
 		}
 	}
 
-	@PostMapping("/sichtung/{id}/comment")
+	@PostMapping("/sichtung/{id}")
 	public String postComment(
 			@PathVariable long id,
 			@Valid @ModelAttribute("commentform") CommentForm commentForm,
@@ -93,24 +92,20 @@ public class ObservationController {
 			return "observationdetail";
 		}
 
-		Optional<Observation> found = observationService.findById(id);
+		Observation found = observationService.findById(id).orElseThrow(
+				() -> new SichtungNotFoundException("Sichtung not found")
+		);
 
+		String comment = commentForm.getComment();
 
-		if(found.isPresent()) {
-			Observation observation = found.get();
+		commentService.addComment(comment, principal.getName(), found);
 
-			String comment = commentForm.getComment();
-
-			commentService.addComment(comment, principal.getName(), observation);
-
-			m.addAttribute("comments", commentService.findAllByObservationOrderByCreatedAtAsc(observation));
-			m.addAttribute("observation", found.get());
-			m.addAttribute("commentform", new CommentForm());
-
-			return "observationdetail";
-		}
+		m.addAttribute("comments", found.getComments());
+		m.addAttribute("observation", found);
+		m.addAttribute("commentform", new CommentForm());
 
 		return "observationdetail";
+
 	}
 
 	@PostMapping("/sichtung")

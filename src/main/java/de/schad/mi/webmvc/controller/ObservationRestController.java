@@ -77,7 +77,7 @@ public class ObservationRestController {
     public List<Comment> getAllCommentsByGivenId(@PathVariable long id) {
         Observation observation = observationService.findById(id).orElseThrow(
                 () -> new SichtungNotFoundException("Observation not found"));
-        return commentService.findAllByObservation(observation);
+        return observation.getComments();
     }
 
     @GetMapping("/sichtungen/{id}/kommentare/{kid}")

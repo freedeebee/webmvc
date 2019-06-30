@@ -4,6 +4,7 @@ import de.schad.mi.webmvc.model.data.Comment;
 import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.model.data.User;
 import de.schad.mi.webmvc.repository.CommentRepository;
+import de.schad.mi.webmvc.repository.ObservationRepository;
 import de.schad.mi.webmvc.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,12 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final ObservationRepository observationRepository;
 
-    public CommentServiceImpl(CommentRepository commentRepository, UserRepository userRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserRepository userRepository, ObservationRepository observationRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+        this.observationRepository = observationRepository;
     }
 
 
@@ -33,21 +36,14 @@ public class CommentServiceImpl implements CommentService {
             comment.setComment(commentText);
             comment.setLoginName(user.getLoginname());
             comment.setFullName(user.getFullname());
-            //comment.setObservation(observation);
             comment.setAvatar(user.getAvatar());
-            commentRepository.save(comment);
+
+            List<Comment> observationComments = observation.getComments();
+            observationComments.add(comment);
+            observation.setComments(observationComments);
+            observationRepository.save(observation);
         }
 
-    }
-
-    @Override
-    public List<Comment> findAllByObservationOrderByCreatedAtAsc(Observation observation) {
-        return commentRepository.findAllByObservationOrderByCreatedAtAsc(observation);
-    }
-
-    @Override
-    public List<Comment> findAllByObservation(Observation observation) {
-        return commentRepository.findAllByObservation(observation);
     }
 
     public Optional<Comment> findById(long id) {
