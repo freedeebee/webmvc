@@ -41,9 +41,9 @@ public class ObservationServiceImpl implements ObservationService {
     }
 
     @Override
-    public Observation convert(ObservationCreationForm observation, String filename) {
+    public Observation convert(String username, ObservationCreationForm observation, String filename) {
         Observation cObservation = new Observation();
-        cObservation.setFinder(observation.getFinder());
+        cObservation.setFinder(username);
         cObservation.setLocation(observation.getLocation());
         cObservation.setDate(observation.getDate());
         cObservation.setDaytime(observation.getDaytime());
@@ -57,7 +57,6 @@ public class ObservationServiceImpl implements ObservationService {
     @Override
     public ObservationCreationForm convertBack(Observation observation) {
         ObservationCreationForm formObservation = new ObservationCreationForm();
-        formObservation.setFinder(observation.getFinder());
         formObservation.setDescription(observation.getDescription());
         formObservation.setRating(observation.getRating());
         formObservation.setLocation(observation.getLocation());

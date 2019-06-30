@@ -18,9 +18,6 @@ import de.schad.mi.webmvc.annotations.Siebzehnhaft;
  */
 public class ObservationCreationForm {
 
-    @Size(min = 3, message = "{sichtung.form.error.name}")
-    private String finder;
-
     @NotBlank(message = "{sichtung.form.error.location}")
     private String location;
 
@@ -44,22 +41,13 @@ public class ObservationCreationForm {
     public ObservationCreationForm() {
     }
 
-    public ObservationCreationForm(String finder, String location, LocalDate date, String[] daytime, String description, String rating, MultipartFile image) {
-        this.finder = finder;
+    public ObservationCreationForm(String location, LocalDate date, String[] daytime, String description, String rating, MultipartFile image) {
         this.location = location;
         this.date = date;
         this.daytime = daytime;
         this.description = description;
         this.rating = rating;
         this.image = image;
-    }
-
-    public String getFinder() {
-        return this.finder;
-    }
-
-    public void setFinder(String finder) {
-        this.finder = finder;
     }
 
     public String getLocation() {

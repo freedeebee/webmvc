@@ -12,7 +12,7 @@ public interface ObservationService {
     Optional<Observation> findById(long id);
     void save(Observation observation);
     void delete(Observation observation);
-    Observation convert(ObservationCreationForm observation, String filename);
+    Observation convert(String username, ObservationCreationForm observation, String filename);
     ObservationCreationForm convertBack(Observation observation);
 	void override(long id, Observation observation);
 }

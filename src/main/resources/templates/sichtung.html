@@ -46,7 +46,7 @@
 								<h3 class="h3" th:text="${s.description}">Beschreibung</h3>
 								<div class="observation_teaser__meta"><span th:text="${s.date}">23.10.1991</span> - <span th:text="${s.finder}">freedeebee</span></div>
 								<a th:href="@{|/sichtung/${s.id}|}" class="link">Read more</a>
-								<a th:href="@{|/sichtung/${s.id}/edit|}" class="link">Edit</a>
+								<a th:if="${#authentication.name} == ${s.finder}" th:href="@{|/sichtung/${s.id}/edit|}" class="link">Edit</a>
 							</div>
 						</div>
 					</div>
@@ -64,10 +64,6 @@
 				<div class="column">
 
 					<form th:action="@{/sichtung}" th:method="POST" th:object="${sichtungform}" enctype="multipart/form-data">
-						<div class="observation__formElem">
-							<input class="input observation__input" type="text" id="finder" th:field="*{finder}" th:errorclass="alert-danger" th:placeholder="#{sichtung.form.name}">
-							<span class="observation__errormessage" th:if="${#fields.hasErrors('finder')}" th:errors="*{finder}">Finder zu kurz</span>
-						</div>
 
 						<div class="observation__formElem">
 							<input class="input observation__input" type="text" id="location" th:field="*{location}" th:errorclass="alert-danger" th:placeholder="#{sichtung.form.location}">
@@ -101,7 +97,7 @@
 						</div>
 
 						<label for="avatar">Image</label>
-						<input class="input createuser__input createuser__input--file" type="file" id="image" name="image" placeholder="Bild">
+						<input class="input createuser__input createuser__input--file" type="file" id="avatar" name="image" placeholder="Bild">
 
 						<input class="button" type="submit" th:value="#{sichtung.form.submit}">
 

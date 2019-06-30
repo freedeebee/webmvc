@@ -68,7 +68,7 @@ public class ObservationController {
 	public String editObservation(@PathVariable long id, Model m){
 
 		Optional<Observation> found = observationService.findById(id);
-		//Simple Edit -> Everyone can edit
+
 		if(found.isPresent()){
 			m.addAttribute("sichtungform", observationService.convertBack(found.get()));
 			m.addAttribute("daytimevals", daytimecbs);
@@ -112,7 +112,8 @@ public class ObservationController {
 	public String getFormInput(
 		@Valid @ModelAttribute("sichtungform") ObservationCreationForm sichtung, BindingResult result,
 		@RequestParam("image") MultipartFile file,
-		Model m) {
+		Model m,
+		Principal principal) {
 
 		if(result.hasErrors()) {
 			m.addAttribute("daytimevals", daytimecbs);
@@ -144,7 +145,7 @@ public class ObservationController {
             }
         }
 
-		observationService.save(observationService.convert(sichtung, filename));
+		observationService.save(observationService.convert(principal.getName(), sichtung, filename));
 
 		// Clear form
 		m.addAttribute("sichtungform", new ObservationCreationForm());
