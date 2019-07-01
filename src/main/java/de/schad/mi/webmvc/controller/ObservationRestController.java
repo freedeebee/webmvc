@@ -91,8 +91,12 @@ public class ObservationRestController {
     }
 
     @PostMapping("sichtungen/{id}/kommentare")
-    public void addComment(@PathVariable("id") long id, @RequestBody Comment comment){
-        commentService.save(comment);
+    public Comment addComment(@PathVariable("id") long id, 
+                            @RequestBody Comment comment){
+        Observation observation = observationService.findById(id).orElseThrow(
+            () -> new SichtungNotFoundException("Observation not found"));
+        commentService.save(comment, observation);
+        return comment;
     }
 
 }
