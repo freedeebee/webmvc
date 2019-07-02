@@ -25,4 +25,5 @@ dependencies {
 	runtimeOnly 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	compileOnly 'org.projectlombok:lombok:1.18.8'
 	annotationProcessor 'org.projectlombok:lombok:1.18.8'
+	implementation 'com.drewnoakes:metadata-extractor:2.11.0'
 }
