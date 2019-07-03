@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Metadata;
-
 import de.schad.mi.webmvc.model.data.ImageMeta;
 
 
