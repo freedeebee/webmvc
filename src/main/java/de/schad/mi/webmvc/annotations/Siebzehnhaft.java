@@ -10,6 +10,13 @@ import javax.validation.Payload;
 
 import de.schad.mi.webmvc.validators.SiebzehnhaftValidator;
 
+/**
+ * Siebzehnhaft is an annotation to validate a variable to contain 17 or siebzehn
+ *
+ * For implementation see {@link SiebzehnhaftValidator}
+ * @author Dennis Schad
+ *
+ */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = SiebzehnhaftValidator.class)
