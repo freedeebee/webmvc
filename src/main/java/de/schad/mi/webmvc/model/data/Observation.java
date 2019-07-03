@@ -48,8 +48,8 @@ public class Observation {
         this.description = description;
         this.rating = rating;
         this.image = image;
-        this.setLongitude(longitude);
-        this.setLatitude(latitude);
+        this.longitude = longitude;
+        this.latitude =latitude;
     }
 
     public long getId() {
