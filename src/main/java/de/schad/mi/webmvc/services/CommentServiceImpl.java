@@ -49,9 +49,4 @@ public class CommentServiceImpl implements CommentService {
     public Optional<Comment> findById(long id) {
         return commentRepository.findById(id);
     }
-
-    @Override
-    public void save(Comment comment, Observation observation) {
-        addComment(comment.getComment(), comment.getLoginName(), observation);
-    }
 }
