@@ -47,17 +47,19 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public ImageMeta getMetaData(FileInputStream fileStream) throws ImageProcessingException, IOException {
         
-        String location = "";
+        double latitude = 0;
+        double longitude = 0;
         Instant date;
         
 
         Metadata metadata = ImageMetadataReader.readMetadata(fileStream);
         var geodir = metadata.getFirstDirectoryOfType(GpsDirectory.class); 
-		location = geodir.getGeoLocation().toDMSString();
+        latitude = geodir.getGeoLocation().getLatitude();
+        longitude = geodir.getGeoLocation().getLongitude();
 		Directory exififd0dir = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class); 
 		date = exififd0dir.getDate(ExifIFD0Directory.TAG_DATETIME_ORIGINAL).toInstant();
         
-        ImageMeta imageMeta = new ImageMeta(LocalDate.ofInstant(date, ZoneId.of("")),location);
+        ImageMeta imageMeta = new ImageMeta(LocalDate.ofInstant(date, ZoneId.of("")),latitude,longitude);
         ImageMetadataReader.readMetadata(fileStream);
         return imageMeta;
     }

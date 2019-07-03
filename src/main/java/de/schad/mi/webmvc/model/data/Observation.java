@@ -29,6 +29,9 @@ public class Observation {
 
     private String image;
 
+    private double longitude;
+    private double latitude;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("observation")
     private List<Comment> comments;
@@ -37,7 +40,7 @@ public class Observation {
     }
 
     public Observation(String finder, String location, LocalDate date, String[] daytime, String description,
-            String rating, String image) {
+            String rating, String image, double longitude, double latitude) {
         this.finder = finder;
         this.location = location;
         this.date = date;
@@ -45,6 +48,8 @@ public class Observation {
         this.description = description;
         this.rating = rating;
         this.image = image;
+        this.setLongitude(longitude);
+        this.setLatitude(latitude);
     }
 
     public long getId() {
@@ -117,6 +122,22 @@ public class Observation {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     @Override
