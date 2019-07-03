@@ -1,23 +1,32 @@
 package de.schad.mi.webmvc.services;
 
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.schad.mi.webmvc.exceptions.SichtungNotFoundException;
 import de.schad.mi.webmvc.model.ObservationCreationForm;
+import de.schad.mi.webmvc.model.data.ImageMeta;
 import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.repository.ObservationRepository;
 
 @Service
 public class ObservationServiceImpl implements ObservationService {
 
+    private final Logger logger = LoggerFactory.getLogger(ObservationServiceImpl.class);
+
     private final ObservationRepository repository;
+    private final ImageService imageService;
 
     @Autowired
-    public ObservationServiceImpl(ObservationRepository repository) {
+    public ObservationServiceImpl(ObservationRepository repository, ImageService imageService) {
         this.repository = repository;
+        this.imageService = imageService;
     }
 
     @Override
@@ -51,6 +60,16 @@ public class ObservationServiceImpl implements ObservationService {
         cObservation.setRating(observation.getRating());
         cObservation.setImage(filename);
 
+        try {
+            ImageMeta meta = imageService.getMetaData(new FileInputStream(filename));
+            cObservation.setLongitude(meta.getLongitude());
+            cObservation.setLatitude(meta.getLatitude());
+        } catch (Exception e) {
+            logger.warn("Something went wrong");
+            cObservation.setLongitude(0);
+            cObservation.setLatitude(0);
+        }
+
         return cObservation;
     }
 
@@ -67,15 +86,16 @@ public class ObservationServiceImpl implements ObservationService {
 
     @Override
     public void override(long id, Observation observation) {
-        Optional<Observation> tempObservation = repository.findById(id);
-        tempObservation.get().setComments(observation.getComments());
-        tempObservation.get().setDate(observation.getDate());
-        tempObservation.get().setDaytime(observation.getDaytime());
-        tempObservation.get().setDescription(observation.getDescription());
-        tempObservation.get().setFinder(observation.getFinder());
-        tempObservation.get().setImage(observation.getImage());
-        tempObservation.get().setLocation(observation.getLocation());
-        tempObservation.get().setRating(observation.getRating());
+        Observation tempObservation = repository.findById(id)
+            .orElseThrow(() -> new SichtungNotFoundException("Observation not found"));
+        tempObservation.setComments(observation.getComments());
+        tempObservation.setDate(observation.getDate());
+        tempObservation.setDaytime(observation.getDaytime());
+        tempObservation.setDescription(observation.getDescription());
+        tempObservation.setFinder(observation.getFinder());
+        tempObservation.setImage(observation.getImage());
+        tempObservation.setLocation(observation.getLocation());
+        tempObservation.setRating(observation.getRating());
         repository.flush();
     }
 

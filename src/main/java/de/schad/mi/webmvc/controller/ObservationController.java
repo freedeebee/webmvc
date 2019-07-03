@@ -3,11 +3,9 @@ package de.schad.mi.webmvc.controller;
 import de.schad.mi.webmvc.exceptions.SichtungNotFoundException;
 import de.schad.mi.webmvc.model.CommentForm;
 import de.schad.mi.webmvc.model.ObservationCreationForm;
-import de.schad.mi.webmvc.model.data.ImageMeta;
 import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.services.CommentService;
 import de.schad.mi.webmvc.services.ImageService;
-import de.schad.mi.webmvc.services.ImageServiceImpl;
 import de.schad.mi.webmvc.services.ObservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,20 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
-import com.drew.imaging.ImageProcessingException;
-import com.drew.lang.GeoLocation;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifIFD0Directory;
-import com.drew.metadata.exif.GpsDirectory;
-
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -186,23 +172,14 @@ public class ObservationController {
 			filename = filename + "." + file.getOriginalFilename().split("\\.")[1];
 
 			String status = "";
-			ImageMeta metadata=null;
             try {
 				status = imageService.store(file.getInputStream(), filename);
-				String[] pathSplit = status.split(" ");
-				metadata = imageService.getMetaData(new FileInputStream(pathSplit[1]));
-
-            } catch (IOException | ImageProcessingException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            if (status.contains("ok")) {
+			if (status.contains("ok")) {
 				sichtung.setImage(file);
-				if(metadata != null){
-
-				sichtung.setLocation(metadata.getGeoLocation());
-				sichtung.setDate(metadata.getDate());
-				}
             }
         }
 
