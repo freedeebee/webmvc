@@ -3,9 +3,11 @@ package de.schad.mi.webmvc.controller;
 import de.schad.mi.webmvc.exceptions.SichtungNotFoundException;
 import de.schad.mi.webmvc.model.CommentForm;
 import de.schad.mi.webmvc.model.ObservationCreationForm;
+import de.schad.mi.webmvc.model.data.ImageMeta;
 import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.services.CommentService;
 import de.schad.mi.webmvc.services.ImageService;
+import de.schad.mi.webmvc.services.ImageServiceImpl;
 import de.schad.mi.webmvc.services.ObservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +18,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+
+import com.drew.imaging.ImageProcessingException;
+import com.drew.lang.GeoLocation;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.drew.metadata.exif.GpsDirectory;
+
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -32,12 +47,12 @@ public class ObservationController {
 	private final ObservationService observationService;
 	private final CommentService commentService;
 
-    private String[] daytimecbs = {"morgens", "mittags", "abends"};
-    private String[] ratingsbs = {"*", "**", "***", "****", "*****"};
-
+	private String[] daytimecbs = { "morgens", "mittags", "abends" };
+	private String[] ratingsbs = { "*", "**", "***", "****", "*****" };
 
 	@Autowired
-	public ObservationController(ObservationService observationService, ImageService imageService, CommentService commentService) {
+	public ObservationController(ObservationService observationService, ImageService imageService,
+			CommentService commentService) {
 		this.observationService = observationService;
 		this.imageService = imageService;
 		this.commentService = commentService;
@@ -72,15 +87,13 @@ public class ObservationController {
 	@GetMapping("/sichtung/{id}")
 	public String showObservationDetail(@PathVariable long id, Model m) {
 
-		Observation found = observationService.findById(id).orElseThrow(
-				() -> new SichtungNotFoundException("Sichtung not found")
-		);
+		Observation found = observationService.findById(id)
+				.orElseThrow(() -> new SichtungNotFoundException("Sichtung not found"));
 
 		m.addAttribute("comments", found.getComments());
 		m.addAttribute("observation", found);
 		m.addAttribute("commentform", new CommentForm());
 		return "observationdetail";
-
 
 	}
 
@@ -94,7 +107,7 @@ public class ObservationController {
 	 * @return sichtung template with prefilled sichtungform
 	 */
 	@GetMapping("/sichtung/{id}/edit")
-	public String editObservation(@PathVariable long id, Model m){
+	public String editObservation(@PathVariable long id, Model m) {
 
 		Observation found = observationService.findById(id)
 			.orElseThrow(() -> new SichtungNotFoundException("Observation not found"));
@@ -117,20 +130,15 @@ public class ObservationController {
 	 * @return on success: observation detail page with new comment
 	 */
 	@PostMapping("/sichtung/{id}")
-	public String postComment(
-			@PathVariable long id,
-			@Valid @ModelAttribute("commentform") CommentForm commentForm,
-			BindingResult result,
-			Model m,
-			Principal principal) {
+	public String postComment(@PathVariable long id, @Valid @ModelAttribute("commentform") CommentForm commentForm,
+			BindingResult result, Model m, Principal principal) {
 
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return "observationdetail";
 		}
 
-		Observation found = observationService.findById(id).orElseThrow(
-				() -> new SichtungNotFoundException("Sichtung not found")
-		);
+		Observation found = observationService.findById(id)
+				.orElseThrow(() -> new SichtungNotFoundException("Sichtung not found"));
 
 		String comment = commentForm.getComment();
 
@@ -156,13 +164,10 @@ public class ObservationController {
 	 *
 	 */
 	@PostMapping("/sichtung")
-	public String getFormInput(
-		@Valid @ModelAttribute("sichtungform") ObservationCreationForm sichtung, BindingResult result,
-		@RequestParam("image") MultipartFile file,
-		Model m,
-		Principal principal) {
+	public String getFormInput(@Valid @ModelAttribute("sichtungform") ObservationCreationForm sichtung,
+			BindingResult result, @RequestParam("image") MultipartFile file, Model m, Principal principal) {
 
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			m.addAttribute("daytimevals", daytimecbs);
 			m.addAttribute("ratingvals", ratingsbs);
 			return "sichtung";
@@ -170,7 +175,7 @@ public class ObservationController {
 
 		String filename = "";
 
-		if(!file.isEmpty()) {
+		if (!file.isEmpty()) {
 			filename = file.getOriginalFilename().trim() + LocalDateTime.now().toString();
 
 			// Replace special characters
@@ -180,15 +185,24 @@ public class ObservationController {
 			// Append file format
 			filename = filename + "." + file.getOriginalFilename().split("\\.")[1];
 
-            String status = "";
+			String status = "";
+			ImageMeta metadata=null;
             try {
-                status = imageService.store(file.getInputStream(), filename);
-            } catch (IOException e) {
+				status = imageService.store(file.getInputStream(), filename);
+				String[] pathSplit = status.split(" ");
+				metadata = imageService.getMetaData(new FileInputStream(pathSplit[1]));
+
+            } catch (IOException | ImageProcessingException e) {
                 e.printStackTrace();
             }
 
-            if (status.equals("ok")) {
-                sichtung.setImage(file);
+            if (status.contains("ok")) {
+				sichtung.setImage(file);
+				if(metadata != null){
+
+				sichtung.setLocation(metadata.getGeoLocation());
+				sichtung.setDate(metadata.getDate());
+				}
             }
         }
 

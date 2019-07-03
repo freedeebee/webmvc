@@ -9,5 +9,5 @@ public interface CommentService {
 
     void addComment(String commentText, String username, Observation observation);
     Optional<Comment> findById(long id);
-    void save(Comment comment);
+    void save(Comment comment, Observation observation);
 }

@@ -38,9 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/users/create", "/h2-console/**", "/rest/**").permitAll()
+            .antMatchers("/users/create", "/h2-console/**").permitAll()
             .antMatchers("/users/**", "/h2-console/**").hasRole("ADMIN")
             .antMatchers("/login", "/", "/sichtung", "/css/**", "/images/**", "/fonts/**").permitAll()
+            .antMatchers("/rest/**").authenticated()
             .anyRequest().authenticated()
         .and()
             .formLogin()
@@ -54,9 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .permitAll()
         .and()
             .httpBasic()
-            .realmName("ObservationService")
+            .realmName("RestService")
         .and()
-            .csrf().ignoringAntMatchers("/h2-console/**", "/rest/**")
+            .csrf().ignoringAntMatchers("/h2-console/**","/rest/**")
         .and()
             .headers().frameOptions().sameOrigin();
     }
