@@ -198,12 +198,7 @@ public class ObservationController {
 
             if (status.contains("ok")) {
 				sichtung.setImage(file);
-				if(metadata != null){
-
-				sichtung.setLocation(metadata.getGeoLocation());
-				sichtung.setDate(metadata.getDate());
-				}
-            }
+			}
         }
 
 		observationService.save(observationService.convert(principal.getName(), sichtung, filename));
