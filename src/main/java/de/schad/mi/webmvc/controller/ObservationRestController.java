@@ -165,7 +165,7 @@ public class ObservationRestController {
         Observation observation = observationService.findById(id)
             .orElseThrow(() -> new SichtungNotFoundException("Observation not found"));
 
-        commentService.save(comment, observation);
+        commentService.addComment(comment.getComment(), comment.getLoginName(), observation);
     }
 
 }

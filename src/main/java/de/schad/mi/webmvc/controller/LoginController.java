@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * LoginController handles requestmapping for Login and Logout processes
+ *
+ * @author Dennis Schad
  */
 @Controller
 public class LoginController {
