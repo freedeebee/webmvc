@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.schad.mi.webmvc.exceptions.SichtungNotFoundException;
@@ -17,6 +18,9 @@ import de.schad.mi.webmvc.repository.ObservationRepository;
 
 @Service
 public class ObservationServiceImpl implements ObservationService {
+
+    @Value("${file.upload.directory}")
+    private String UPLOADDIR;
 
     private final Logger logger = LoggerFactory.getLogger(ObservationServiceImpl.class);
 
@@ -61,13 +65,16 @@ public class ObservationServiceImpl implements ObservationService {
         cObservation.setImage(filename);
 
         try {
-            ImageMeta meta = imageService.getMetaData(new FileInputStream(filename));
+            ImageMeta meta = imageService.getMetaData(new FileInputStream(UPLOADDIR +  "/" + filename));
+            logger.info("{}", meta.getLongitude());
+            logger.info("{}", meta.getLatitude());
             cObservation.setLongitude(meta.getLongitude());
             cObservation.setLatitude(meta.getLatitude());
         } catch (Exception e) {
             logger.warn("Something went wrong");
             cObservation.setLongitude(0);
             cObservation.setLatitude(0);
+            e.printStackTrace();
         }
 
         return cObservation;

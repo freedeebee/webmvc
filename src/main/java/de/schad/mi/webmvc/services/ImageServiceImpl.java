@@ -17,6 +17,8 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.exif.GpsDirectory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,8 @@ public class ImageServiceImpl implements ImageService {
 
     @Value("${file.upload.directory}")
     private String UPLOADDIR;
+
+    private final Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     @Override
     public String store(InputStream input, String filename) {
@@ -46,22 +50,28 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public ImageMeta getMetaData(FileInputStream fileStream) throws ImageProcessingException, IOException {
-        
+
         double latitude = 0;
         double longitude = 0;
-        Instant date;
-        
 
         Metadata metadata = ImageMetadataReader.readMetadata(fileStream);
-        var geodir = metadata.getFirstDirectoryOfType(GpsDirectory.class); 
+        var geodir = metadata.getFirstDirectoryOfType(GpsDirectory.class);
         latitude = geodir.getGeoLocation().getLatitude();
         longitude = geodir.getGeoLocation().getLongitude();
-		Directory exififd0dir = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class); 
-		date = exififd0dir.getDate(ExifIFD0Directory.TAG_DATETIME_ORIGINAL).toInstant();
-        
-        ImageMeta imageMeta = new ImageMeta(LocalDate.ofInstant(date, ZoneId.of("")),latitude,longitude);
-        ImageMetadataReader.readMetadata(fileStream);
+
+        logger.info("Lat: {}", latitude);
+        logger.info("Long: {}", longitude);
+
+        // Directory exififd0dir = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+        // if (exififd0dir == null) {
+        //     date = null;
+        // } else {
+        //     date = exififd0dir.getDate(ExifIFD0Directory.TAG_DATETIME_ORIGINAL).toInstant();
+        // }
+
+
+        ImageMeta imageMeta = new ImageMeta(latitude,longitude);
         return imageMeta;
     }
-    
+
 }

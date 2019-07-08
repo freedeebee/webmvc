@@ -43,14 +43,21 @@
                 </div>
             </div>
 		</div>
-		
-		<div class="mapouter">
-			<div class="gmap_canvas">
-				<iframe width="666" height="300" id="gmap_canvas" src="https://www.openstreetmap.org/#map=18/${observation.longitude}/${observation.latitude}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-				</iframe><a href="http://www.maps-erstellen.de">maps-erstellen.de</a>
+		<div class="row">
+			<div class="column">
+				<p th:text="${observation.longitude}"></p>
+				<p th:text="${observation.latitude}"></p>
+				<div class="mapouter">
+					<div class="gmap_canvas">
+						<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+						th:src="@{|https://www.openstreetmap.org/export/embed.html?bbox=${observation.latitude},${observation.longitude},${observation.latitude},${observation.longitude}&amp;marker=${observation.longitude}%2C${observation.latitude}|}"
+						style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=50.2031&amp;mlon=8.7083#map=13/50.2032/8.7084">Größere Karte anzeigen</a></small>
+					</div>
+					<style>.mapouter{overflow:hidden;height:300px;width:666px;}.gmap_canvas {background:none!important;height:300px;width:666px;}</style>
+				</div>
 			</div>
-			<style>.mapouter{overflow:hidden;height:300px;width:666px;}.gmap_canvas {background:none!important;height:300px;width:666px;}</style>
 		</div>
+
 
 		<div class="row">
 			<div class="column">

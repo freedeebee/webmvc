@@ -17,6 +17,10 @@ public class ImageMeta {
         this.latitude = latitude;
     }
 
+    public ImageMeta(double longitude, double latitude) {
+        this(null, longitude, latitude);
+    }
+
 
     public void setDate(LocalDate date){
         this.date = date;
@@ -31,7 +35,7 @@ public class ImageMeta {
     public LocalDate getDate(){
         return this.date;
     }
-    
+
     public double getLongitude(){
         return this.longitude;
     }
