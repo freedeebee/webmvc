@@ -86,7 +86,7 @@ public class UsersController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-    
+
             if (status.equals("ok")) {
                 user.setAvatar(file);
             }
@@ -97,6 +97,7 @@ public class UsersController {
         userService.save(convertedUser);
 
         return "redirect:/users";
+
     }
 
     @GetMapping("/delete")
