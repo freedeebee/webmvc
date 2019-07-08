@@ -143,11 +143,16 @@ public class ObservationRestController {
     @GetMapping("/sichtungen/{id}/kommentare/{kid}")
     public Comment getCommentByObservationAndCommentId(@PathVariable("id") long id,
                                                        @PathVariable("kid") long commentId) {
-        // TODO: Bugfix to associate commentId with observation. Current Status: throws 500
         Observation observation = observationService.findById(id).orElseThrow(
                 () -> new SichtungNotFoundException("Observation not found"));
-        return commentService.findById(commentId).orElseThrow(
-                () -> new SichtungNotFoundException("Comment not found"));
+
+        List<Comment> commentsInObservation = observation.getComments();
+        for(Comment comment: commentsInObservation) {
+            if(comment.getId() == commentId) {
+                return comment;
+            }
+        }
+        throw new SichtungNotFoundException("Comment not found");
     }
 
     /**

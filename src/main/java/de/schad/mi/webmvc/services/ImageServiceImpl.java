@@ -6,15 +6,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Directory;
+
 import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifIFD0Directory;
+
 import com.drew.metadata.exif.GpsDirectory;
 
 import org.slf4j.Logger;
