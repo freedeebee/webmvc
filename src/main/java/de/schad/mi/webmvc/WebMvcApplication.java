@@ -2,6 +2,7 @@ package de.schad.mi.webmvc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
  * Start Spring Applicationserver
  */

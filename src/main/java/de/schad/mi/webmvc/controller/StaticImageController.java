@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * StaticImageController serves images at base URL /image
+ */
 @Controller
 @RequestMapping("/image")
 public class StaticImageController {
@@ -23,6 +26,14 @@ public class StaticImageController {
     @Value("${file.upload.directory}")
     private String UPLOADDIR;
 
+    /**
+     * downloadImage opens a image with given name file in browser
+     * 
+     * Request URL: /image/{name}
+     * @param name the name of the image to look for
+     * @return the image opened in browser
+     * @throws IOException if method can't find the resource
+     */
     @GetMapping("/{name}")
     public ResponseEntity<Resource> downloadImage(@PathVariable("name") String name) throws IOException {
         Path path = Paths.get(UPLOADDIR, name);

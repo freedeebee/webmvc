@@ -1,7 +1,7 @@
 package de.schad.mi.webmvc.model;
 
 /**
- * LoginForm
+ * LoginForm Model to represent the form input for Login
  */
 public class LoginForm {
 

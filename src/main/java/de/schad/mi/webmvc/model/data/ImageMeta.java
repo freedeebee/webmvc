@@ -3,7 +3,9 @@ package de.schad.mi.webmvc.model.data;
 import java.time.LocalDate;
 
 /**
- * ImageMeta
+ * ImageMeta Model to store custom Data from ImageService
+ * 
+ * @author Robin Schmidt
  */
 public class ImageMeta {
 

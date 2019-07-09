@@ -3,7 +3,7 @@ package de.schad.mi.webmvc.model;
 import javax.validation.constraints.NotBlank;
 
 /**
- * CommentForm
+ * CommentForm Model to represent the form input for comments
  */
 public class CommentForm {
 

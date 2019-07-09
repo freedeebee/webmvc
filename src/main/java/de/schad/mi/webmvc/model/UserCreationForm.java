@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * UserCreationForm
+ * UserCreationForm Model to represent the form input for User creation 
  */
 public class UserCreationForm {
     @NotBlank(message = "{user.creation.error.loginname}")
