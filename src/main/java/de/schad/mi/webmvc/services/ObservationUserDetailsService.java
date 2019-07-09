@@ -12,18 +12,29 @@ import de.schad.mi.webmvc.model.data.User;
 import de.schad.mi.webmvc.repository.UserRepository;
 
 /**
- * UserDetailsService
+ * UserDetailsService handel some detail Loading
  */
 @Service
 public class ObservationUserDetailsService implements UserDetailsService{
 
 	private final UserRepository repository;
 
+	/**
+	 * Constructor for ObservationUserDetailService
+	 * 
+	 * @param repository jpa Databasebinding for User Repository
+	 */
 	@Autowired
 	public ObservationUserDetailsService(UserRepository repository) {
 		this.repository = repository;
 	}
 
+	/**
+	 * loadUserByUsername method find a user in database and show their details
+	 * 
+	 * @param username Name of the user who wants to be shown
+	 * @return Userdetails of a user
+	 */
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<User> user = repository.findById(username);
 
