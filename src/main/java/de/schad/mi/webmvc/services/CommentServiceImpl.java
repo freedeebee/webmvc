@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * CommentService Impl ist the implementation of the CommentService Interface
+ * 
+ */
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -18,12 +23,18 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final ObservationRepository observationRepository;
 
+    /**
+     * Constructor of CommentService
+     * 
+     * @param commentRepository jpa commentRepository binding for Database comment connection
+     * @param userRepository jpa userRepository binding for Database user connection
+     * @param observationRepository jpa obeservationRepository for Database observation connection
+     */
     public CommentServiceImpl(CommentRepository commentRepository, UserRepository userRepository, ObservationRepository observationRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.observationRepository = observationRepository;
     }
-
 
     @Override
     public void addComment(String commentText, String username, Observation observation) {
@@ -46,6 +57,7 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
+    @Override
     public Optional<Comment> findById(long id) {
         return commentRepository.findById(id);
     }

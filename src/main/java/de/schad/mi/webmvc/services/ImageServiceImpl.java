@@ -21,6 +21,11 @@ import org.springframework.stereotype.Service;
 
 import de.schad.mi.webmvc.model.data.ImageMeta;
 
+
+/**
+ * Image ServiceImpl ist the implementation of ImageService Interface
+ * 
+ */
 @Service
 public class ImageServiceImpl implements ImageService {
 

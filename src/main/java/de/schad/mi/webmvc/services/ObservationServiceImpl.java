@@ -16,6 +16,10 @@ import de.schad.mi.webmvc.model.data.ImageMeta;
 import de.schad.mi.webmvc.model.data.Observation;
 import de.schad.mi.webmvc.repository.ObservationRepository;
 
+/**
+ * ObservationServiceImpl ist the implementation of the ObservationService Interface
+ * 
+ */
 @Service
 public class ObservationServiceImpl implements ObservationService {
 
@@ -27,6 +31,12 @@ public class ObservationServiceImpl implements ObservationService {
     private final ObservationRepository repository;
     private final ImageService imageService;
 
+    /**
+     * Constructor of ObservationServiceImpl
+     * 
+     * @param repository jpa Databasebinding for Observation
+     * @param imageService handle Image Stuff
+     */
     @Autowired
     public ObservationServiceImpl(ObservationRepository repository, ImageService imageService) {
         this.repository = repository;
