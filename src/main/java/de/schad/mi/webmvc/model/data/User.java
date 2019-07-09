@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * User Model to persist Users in Database
+ * @author Dennis Schad
+ */
 @Entity
 @Table(name = "USERS")
 public class User {

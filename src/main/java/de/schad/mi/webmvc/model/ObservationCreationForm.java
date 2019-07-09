@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import de.schad.mi.webmvc.annotations.Siebzehnhaft;
 
 /**
- * ObservationCreationForm
+ * ObservationCreationForm Model to represent the form input for Observations
  */
 public class ObservationCreationForm {
 

@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
- * Comment
+ * Comment Model for persisting comments in database
+ * @author Dennis Schad
  */
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,

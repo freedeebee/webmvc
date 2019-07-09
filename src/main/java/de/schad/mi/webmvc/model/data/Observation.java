@@ -7,6 +7,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Observation Model to store Observation objects
+ * @author Dennis Schad, Michael Heide
+ */
 @Entity
 public class Observation {
 
